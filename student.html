@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Student Portal - Miracle International School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+    <header class="bg-orange-600 text-white shadow-md">
+        <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+            <div>
+                <h1 class="font-black tracking-wide">MIRACLE INTERNATIONAL SCHOOL</h1>
+                <p class="text-xs text-orange-100">Student Portal</p>
+            </div>
+            <div id="student-user" class="hidden items-center gap-3">
+                <span id="student-user-name" class="hidden text-sm font-semibold sm:inline"></span>
+                <button id="logout-button" type="button" class="rounded-lg border border-orange-200/50 bg-orange-800/40 px-3 py-2 text-xs font-bold hover:bg-orange-800">
+                    <i class="fa-solid fa-right-from-bracket mr-1"></i> Log out
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-6xl space-y-6 px-4 py-8">
+        <section id="login-view" class="mx-auto max-w-md rounded-2xl border border-orange-100 bg-white p-6 shadow-sm sm:p-8">
+            <div class="mb-6 text-center">
+                <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-xl text-orange-600">
+                    <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <h2 class="text-2xl font-black">Student Sign In</h2>
+                <p class="mt-1 text-sm text-slate-500">Use your student ID and password.</p>
+            </div>
+            <form id="login-form" class="space-y-4">
+                <label class="block text-xs font-bold">Student ID
+                    <input id="login-student-id" required autocomplete="username" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500" placeholder="e.g. MIS/2026/104">
+                </label>
+                <label class="block text-xs font-bold">Password
+                    <input id="login-student-password" required type="password" autocomplete="current-password" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500" placeholder="Your password">
+                </label>
+                <button class="w-full rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white hover:bg-orange-700">Sign In</button>
+            </form>
+            <div class="mt-4 flex flex-wrap justify-between gap-3 text-xs font-bold">
+                <button id="show-reset" type="button" class="text-orange-700 hover:underline">Set / Forgot Password</button>
+                <a href="/" class="text-slate-500 hover:text-orange-700">All Portals</a>
+            </div>
+        </section>
+
+        <section id="reset-view" class="mx-auto hidden max-w-md rounded-2xl border border-orange-100 bg-white p-6 shadow-sm sm:p-8">
+            <h2 class="text-xl font-black">Set or Reset Password</h2>
+            <p class="mt-1 text-sm text-slate-500">We will send a one-time code to the guardian email registered with the school.</p>
+            <form id="request-reset-form" class="mt-5 space-y-4">
+                <label class="block text-xs font-bold">Student ID
+                    <input id="reset-student-id" required class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500" placeholder="Your student ID">
+                </label>
+                <button class="w-full rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white hover:bg-orange-700">Send Code to Guardian Email</button>
+            </form>
+            <form id="complete-reset-form" class="mt-5 hidden space-y-4">
+                <label class="block text-xs font-bold">Six-digit email code
+                    <input id="reset-code" required inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500">
+                </label>
+                <label class="block text-xs font-bold">New password (at least 8 characters)
+                    <input id="reset-password" required type="password" minlength="8" maxlength="128" autocomplete="new-password" class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500">
+                </label>
+                <button class="w-full rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white hover:bg-orange-700">Save Password</button>
+            </form>
+            <div class="mt-4 flex gap-4 text-xs font-bold">
+                <button id="back-to-login" type="button" class="text-slate-500 hover:text-orange-700">Back to sign in</button>
+                <a href="/" class="text-orange-700 hover:underline">All Portals</a>
+            </div>
+        </section>
+
+        <section id="portal-view" class="hidden space-y-6">
+            <div class="flex flex-col gap-4 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h2 id="portal-student-name" class="text-xl font-black"></h2>
+                    <p id="portal-student-details" class="mt-1 text-sm text-slate-500"></p>
+                </div>
+                <label class="text-xs font-bold">Fees / payments session / term
+                    <input id="portal-session" value="2025/2026 - 1st Term" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm sm:w-64">
+                </label>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <p class="text-xs font-bold uppercase text-slate-500">Fee Due</p>
+                    <p id="fee-due" class="mt-2 text-2xl font-black text-slate-900">—</p>
+                </article>
+                <article class="rounded-2xl border border-green-200 bg-green-50 p-5 shadow-sm">
+                    <p class="text-xs font-bold uppercase text-green-700">Approved Payments</p>
+                    <p id="fee-paid" class="mt-2 text-2xl font-black text-green-800">—</p>
+                </article>
+                <article class="rounded-2xl border border-orange-200 bg-orange-50 p-5 shadow-sm">
+                    <p class="text-xs font-bold uppercase text-orange-700">Balance Remaining</p>
+                    <p id="fee-balance" class="mt-2 text-2xl font-black text-orange-800">—</p>
+                </article>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <section class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+                    <h3 class="text-base font-black">Submit a Payment Reference</h3>
+                    <p class="mt-1 text-xs leading-5 text-slate-500">Pay through the school's approved payment channel first. Enter the amount and reference below. This submission stays pending until the school admin verifies it; it does not immediately reduce your balance.</p>
+                    <form id="payment-form" class="mt-4 space-y-3">
+                        <label class="block text-xs font-bold">Amount paid (NGN)
+                            <input id="payment-amount" type="number" min="0.01" step="0.01" required class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500">
+                        </label>
+                        <label class="block text-xs font-bold">Transfer / receipt reference
+                            <input id="payment-reference" maxlength="120" required class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500" placeholder="Enter the bank or receipt reference">
+                        </label>
+                        <button id="payment-submit" class="w-full rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white hover:bg-orange-700">Submit for Admin Verification</button>
+                    </form>
+                </section>
+                <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <h3 class="text-base font-black">Payment History</h3>
+                    <div class="mt-3 overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead><tr class="border-b text-slate-500"><th class="py-2">Date</th><th class="py-2">Amount</th><th class="py-2">Reference</th><th class="py-2">Status</th></tr></thead>
+                            <tbody id="payment-history"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <section class="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-base font-black">Released Results</h3>
+                        <p class="mt-1 text-xs text-slate-500">All released results saved to your student ID appear here, across sessions and terms, with every subject in each result. Results appear after the school confirms full payment and the admin releases them.</p>
+                    </div>
+                    <button id="refresh-portal" type="button" class="rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold hover:bg-slate-200"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                </div>
+                <div id="released-results" class="mt-4 space-y-4"></div>
+            </section>
+        </section>
+
+        <p id="portal-message" role="status" aria-live="polite" class="mx-auto max-w-xl text-center text-sm"></p>
+    </main>
+
+    <script>
+        const loginView = document.getElementById('login-view');
+        const resetView = document.getElementById('reset-view');
+        const portalView = document.getElementById('portal-view');
+        const message = document.getElementById('portal-message');
+        let currentPortalData;
+
+        function showMessage(text, isError = false) {
+            message.textContent = text;
+            message.className = `mx-auto max-w-xl text-center text-sm ${isError ? 'text-red-600' : 'text-green-700'}`;
+        }
+
+        function formatMoney(kobo) {
+            if (kobo === null || !Number.isFinite(kobo)) return 'Not set';
+            return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(kobo / 100);
+        }
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[character]);
+        }
+
+        function gradeFor(score, examComplete) {
+            const percentage = examComplete ? (score.test + score.exam) : (score.test / 30 * 100);
+            if (percentage >= 70) return 'A';
+            if (percentage >= 60) return 'B';
+            if (percentage >= 50) return 'C';
+            if (percentage >= 40) return 'E';
+            if (percentage >= 30) return 'D';
+            return 'F';
+        }
+
+        function remarkFor(grade) {
+            return ({ A: 'Excellent', B: 'V.Good', C: 'Good', E: 'Pass', D: 'Fair', F: 'Fail' })[grade];
+        }
+
+        async function api(path, options = {}) {
+            if (window.location.protocol === 'file:') {
+                throw new Error('The student portal requires the school Node server. Open the hosted portal at /student.');
+            }
+            const response = await fetch(path, {
+                ...options,
+                credentials: 'same-origin',
+                headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...options.headers }
+            });
+            if (!response.ok) {
+                let errorMessage = 'The request could not be completed.';
+                try {
+                    const body = await response.json();
+                    if (typeof body.error === 'string') errorMessage = body.error;
+                } catch (error) {
+                    console.error('Could not read the student portal error response:', error);
+                }
+                throw new Error(errorMessage);
+            }
+            return response.status === 204 ? null : response.json();
+        }
+
+        function showLogin() {
+            portalView.classList.add('hidden');
+            resetView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+            document.getElementById('student-user').classList.add('hidden');
+        }
+
+        async function loadPortal() {
+            const session = document.getElementById('portal-session').value.trim();
+            if (!session) throw new Error('Enter a session or term.');
+            currentPortalData = await api(`/api/student/portal?session=${encodeURIComponent(session)}`);
+            renderPortal(currentPortalData);
+        }
+
+        function renderPortal(data) {
+            loginView.classList.add('hidden');
+            resetView.classList.add('hidden');
+            portalView.classList.remove('hidden');
+            document.getElementById('student-user').classList.remove('hidden');
+            document.getElementById('student-user').classList.add('flex');
+            document.getElementById('student-user-name').textContent = data.name;
+            document.getElementById('portal-student-name').textContent = data.name;
+            document.getElementById('portal-student-details').textContent = `${data.studentId} • ${data.className}`;
+            document.getElementById('fee-due').textContent = data.feeConfigured ? formatMoney(data.dueKobo) : 'Not set';
+            document.getElementById('fee-paid').textContent = formatMoney(data.paidKobo);
+            document.getElementById('fee-balance').textContent = data.feeConfigured ? formatMoney(data.balanceKobo) : 'Not set';
+            document.getElementById('payment-submit').disabled = !data.feeConfigured || data.balanceKobo <= 0;
+            document.getElementById('payment-submit').classList.toggle('opacity-50', !data.feeConfigured || data.balanceKobo <= 0);
+
+            const payments = document.getElementById('payment-history');
+            payments.innerHTML = data.payments.length ? data.payments.map(payment => `
+                <tr class="border-b border-slate-100">
+                    <td class="py-2 pr-2">${escapeHtml(new Date(payment.submittedAt).toLocaleDateString())}</td>
+                    <td class="py-2 pr-2">${escapeHtml(formatMoney(payment.amountKobo))}</td>
+                    <td class="py-2 pr-2 break-all">${escapeHtml(payment.reference)}</td>
+                    <td class="py-2"><span class="rounded-full px-2 py-1 text-[10px] font-bold ${payment.status === 'approved' ? 'bg-green-100 text-green-700' : payment.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}">${escapeHtml(payment.status)}</span></td>
+                </tr>`).join('') : '<tr><td colspan="4" class="py-4 text-center text-slate-500">No payments recorded for this term.</td></tr>';
+
+            const results = document.getElementById('released-results');
+            results.innerHTML = data.results.length ? data.results.map(result => `
+                <article class="overflow-hidden rounded-xl border border-slate-200">
+                    <div class="flex flex-wrap justify-between gap-2 bg-slate-50 p-3 text-xs">
+                        <strong>${escapeHtml(result.session)}</strong>
+                        <span>${escapeHtml(result.class)} • ${escapeHtml(result.grade)} • ${escapeHtml(result.percentage)}%</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead><tr class="border-b bg-white text-slate-500"><th class="p-2">Subject</th><th class="p-2">Test</th><th class="p-2">Exam</th><th class="p-2">Total</th><th class="p-2">Grade</th><th class="p-2">Remark</th></tr></thead>
+                            <tbody>${Object.entries(result.scores || {}).map(([subject, score]) => {
+                                const total = Number(score.test || 0) + (Number.isFinite(score.exam) ? score.exam : 0);
+                                const grade = gradeFor(score, result.examComplete);
+                                return `<tr class="border-b border-slate-100"><td class="p-2">${escapeHtml(subject)}</td><td class="p-2">${escapeHtml(score.test)}</td><td class="p-2">${Number.isFinite(score.exam) ? escapeHtml(score.exam) : '—'}</td><td class="p-2">${total}</td><td class="p-2">${grade}</td><td class="p-2">${remarkFor(grade)}</td></tr>`;
+                            }).join('')}</tbody>
+                        </table>
+                    </div>
+                </article>`).join('') : '<p class="rounded-xl bg-slate-50 p-5 text-center text-sm text-slate-500">No results have been released for your account yet.</p>';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async event => {
+            event.preventDefault();
+            showMessage('');
+            const studentId = document.getElementById('login-student-id').value.trim();
+            const password = document.getElementById('login-student-password').value;
+            try {
+                await api('/api/student/auth/login', { method: 'POST', body: JSON.stringify({ studentId, password }) });
+                document.getElementById('portal-session').value = '2025/2026 - 1st Term';
+                await loadPortal();
+                document.getElementById('login-student-password').value = '';
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('show-reset').addEventListener('click', () => {
+            loginView.classList.add('hidden');
+            resetView.classList.remove('hidden');
+            document.getElementById('reset-student-id').value = document.getElementById('login-student-id').value.trim();
+        });
+
+        document.getElementById('back-to-login').addEventListener('click', showLogin);
+        document.getElementById('request-reset-form').addEventListener('submit', async event => {
+            event.preventDefault();
+            const studentId = document.getElementById('reset-student-id').value.trim();
+            try {
+                await api('/api/student/auth/request-reset', { method: 'POST', body: JSON.stringify({ studentId }) });
+                document.getElementById('login-student-id').value = studentId;
+                document.getElementById('complete-reset-form').classList.remove('hidden');
+                showMessage('If this student account is registered, a password code has been sent to its guardian email.');
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('complete-reset-form').addEventListener('submit', async event => {
+            event.preventDefault();
+            try {
+                await api('/api/student/auth/reset-password', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        studentId: document.getElementById('reset-student-id').value.trim(),
+                        code: document.getElementById('reset-code').value.trim(),
+                        password: document.getElementById('reset-password').value
+                    })
+                });
+                document.getElementById('login-student-password').value = '';
+                document.getElementById('reset-code').value = '';
+                document.getElementById('reset-password').value = '';
+                document.getElementById('complete-reset-form').classList.add('hidden');
+                showLogin();
+                showMessage('Password saved. Sign in using your student ID and new password.');
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('payment-form').addEventListener('submit', async event => {
+            event.preventDefault();
+            if (!currentPortalData) return;
+            const amountKobo = Math.round(Number(document.getElementById('payment-amount').value) * 100);
+            try {
+                await api('/api/student/payments', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        session: document.getElementById('portal-session').value.trim(),
+                        amountKobo,
+                        reference: document.getElementById('payment-reference').value.trim()
+                    })
+                });
+                event.target.reset();
+                await loadPortal();
+                showMessage('Payment reference submitted. It will appear in your paid balance after admin verification.');
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('portal-session').addEventListener('change', async () => {
+            try {
+                await loadPortal();
+                showMessage('');
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('refresh-portal').addEventListener('click', async () => {
+            try {
+                await loadPortal();
+                showMessage('Portal information refreshed.');
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        document.getElementById('logout-button').addEventListener('click', async () => {
+            try {
+                await api('/api/student/auth/logout', { method: 'POST' });
+            } catch (error) {
+                console.error('Could not confirm student sign-out:', error);
+            }
+            showLogin();
+            showMessage('You have been signed out.');
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (window.location.protocol === 'file:') {
+                showLogin();
+                showMessage('The student portal requires the school Node server. Open the hosted portal at /student.', true);
+                return;
+            }
+            try {
+                await loadPortal();
+            } catch (error) {
+                if (!error.message.includes('Sign in again')) console.error('Could not restore student session:', error);
+                showLogin();
+            }
+        });
+    </script>
+</body>
+</html>

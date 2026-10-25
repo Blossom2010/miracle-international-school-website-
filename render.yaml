@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: miracle-school-portal
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: miracle-school-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_PATH
+        value: /var/data/miracle-school.sqlite
+      - key: RESET_CODE_SECRET
+        generateValue: true

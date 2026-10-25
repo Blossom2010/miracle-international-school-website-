@@ -1,0 +1,2832 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-amber-50/30">
+<head>
+  <!-- <link rel="stylesheet" href="style.css">   -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miracle International School - Result Portal & WhatsApp System</title>
+    
+    <!-- Tailwind CSS with Custom Orange Theme Config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        orange: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                        whatsapp: {
+                            500: '#25D366',
+                            600: '#128C7E',
+                            700: '#075E54'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- FontAwesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        @keyframes welcome-fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes welcome-rise {
+            from { opacity: 0; transform: translateY(18px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes welcome-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        @keyframes welcome-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(251, 146, 60, 0.25); }
+            50% { box-shadow: 0 0 0 18px rgba(251, 146, 60, 0); }
+        }
+        #welcome-splash { animation: welcome-fade-in 0.4s ease-out both; }
+        .welcome-mark { animation: welcome-glow 1.5s ease-in-out infinite; }
+        .portal-choice-card { animation: welcome-rise 0.55s ease-out both; }
+        .portal-choice-card:nth-child(2) { animation-delay: 0.08s; }
+        .portal-choice-card:nth-child(3) { animation-delay: 0.16s; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+        }
+        @media screen and (max-width: 640px) {
+            #site-header-inner {
+                height: auto;
+                min-height: 4rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            #site-brand {
+                flex: 1 1 180px;
+                min-width: 0;
+                gap: 0.5rem;
+            }
+            #site-brand .w-10 {
+                width: 2rem;
+                height: 2rem;
+                flex: 0 0 2rem;
+            }
+            #site-brand-title {
+                font-size: clamp(0.68rem, 3.6vw, 0.85rem);
+                line-height: 1.2;
+                white-space: normal;
+            }
+            #site-brand-subtitle {
+                font-size: 0.55rem;
+                line-height: 1.25;
+                letter-spacing: 0.08em;
+                white-space: normal;
+            }
+            #nav-user-status { flex: 0 0 auto; }
+            #score-input-scroll { overflow: visible; border: 0; }
+            #score-input-table { display: block; width: 100%; }
+            #score-input-table thead { display: none; }
+            #score-input-table tbody { display: block; }
+            #score-input-table tbody tr {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                margin-bottom: 12px;
+                overflow: hidden;
+                border: 1px solid #fed7aa;
+                border-radius: 12px;
+                background: white;
+            }
+            #score-input-table tbody td {
+                display: flex;
+                min-width: 0;
+                flex-direction: column;
+                justify-content: center;
+                gap: 6px;
+                padding: 10px;
+                border-bottom: 1px solid #f1f5f9;
+                text-align: left;
+            }
+            #score-input-table tbody td::before {
+                content: attr(data-label);
+                color: #64748b;
+                font-size: 10px;
+                font-weight: 700;
+                line-height: 1.3;
+                text-transform: uppercase;
+            }
+            #score-input-table tbody td:first-child {
+                grid-column: 1 / -1;
+                background: #fff7ed;
+                color: #7c2d12;
+                font-size: 13px;
+            }
+            #score-input-table tbody td:first-child::before { content: 'Subject'; }
+            #score-input-table tbody td input { box-sizing: border-box; width: 100%; max-width: 100%; }
+        }
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+
+            body * { visibility: hidden; }
+            #printable-report-card, #printable-report-card * { visibility: visible; }
+            .no-print { display: none !important; }
+            html, body { width: 100%; height: auto; margin: 0; background: white; }
+            #report-modal:not(.hidden) {
+                display: block !important;
+                position: static;
+                padding: 0;
+                overflow: visible;
+                background: white;
+            }
+            #report-modal > div {
+                width: 100%;
+                max-width: none;
+                max-height: none;
+                margin: 0;
+                padding: 0;
+                overflow: visible;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            #printable-report-card {
+                position: static;
+                width: 100%;
+                max-height: none;
+                padding: 0;
+                overflow: visible;
+                background: white;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                font-size: 9pt;
+            }
+            #printable-report-card > div { break-inside: avoid; page-break-inside: avoid; }
+            #printable-report-card table { width: 100%; border-collapse: collapse; }
+            #printable-report-card thead { display: table-header-group; }
+            #printable-report-card tr { break-inside: avoid; page-break-inside: avoid; }
+            #printable-report-card th,
+            #printable-report-card td { padding: 4px 6px; }
+            #printable-report-card .space-y-6 > :not([hidden]) ~ :not([hidden]) { margin-top: 10px; }
+            #printable-report-card .text-2xl { font-size: 16pt; }
+            #printable-report-card .text-xl { font-size: 12pt; }
+            #printable-report-card .text-lg { font-size: 10pt; }
+            #printable-report-card .text-xs { font-size: 8pt; }
+            #printable-report-card [class~="text-[9px]"] { font-size: 7pt; }
+            #printable-report-card .p-4 { padding: 8px; }
+            #printable-report-card .p-2 { padding: 4px; }
+            #printable-report-card .overflow-x-auto { overflow: visible; }
+            #printable-report-card * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgb(245, 169, 4); }
+        ::-webkit-scrollbar-thumb { background: #dbd1c7; border-radius: 4px; }
+    </style>
+</head>
+<body class="h-full text-slate-800 bg-amber-50/20 antialiased flex flex-col">
+
+    <!-- GLOBAL NAVBAR -->
+    <header class="bg-gradient-to-r from-orange-700 via-orange-600 to-amber-600 text-white sticky top-0 z-40 no-print shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="site-header-inner" class="flex items-center justify-between h-16">
+                <!-- School Brand Branding -->
+                <div id="site-brand" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-white text-orange-600 flex items-center justify-center font-black text-xl shadow-md">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span id="site-brand-title" class="font-extrabold text-base sm:text-lg tracking-tight block leading-tight">MIRACLE INTERNATIONAL SCHOOL</span>
+                        <span id="site-brand-subtitle" class="text-[10px] text-amber-100 block tracking-widest uppercase font-semibold">Jesus is The Answer • Portal</span>
+                    </div>
+                </div>
+
+                <!-- Session User State Indicator -->
+                <div id="nav-user-status" class="hidden flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <div id="nav-teacher-name" class="text-xs font-bold text-white">Teacher Account</div>
+                        <div id="nav-user-role" class="text-[10px] text-orange-200">Authorized Staff</div>
+                    </div>
+                    <button onclick="logoutTeacher()" class="bg-orange-800/60 hover:bg-orange-900 text-white text-xs px-3 py-1.5 rounded-lg border border-orange-400/30 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <section id="portal-home" class="mx-auto max-w-5xl py-6 sm:py-12">
+            <div class="mb-8 text-center">
+                <div class="welcome-mark mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl bg-orange-100 text-3xl text-orange-600">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-orange-600">Miracle International School</p>
+                <h1 class="mt-3 text-3xl font-black tracking-tight text-slate-900 sm:text-4xl">Welcome to the School Portal</h1>
+                <p class="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500">Choose your portal to continue. Each portal has its own sign-in and access permissions.</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <a href="/admin" class="portal-choice-card group rounded-2xl border border-orange-100 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg">
+                    <span class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-xl text-orange-700 group-hover:bg-orange-600 group-hover:text-white"><i class="fa-solid fa-user-shield"></i></span>
+                    <span class="block text-lg font-extrabold text-slate-900">Admin Portal</span>
+                    <span class="mt-2 block text-xs leading-5 text-slate-500">Manage teachers, students, fees, payments, and result releases.</span>
+                    <span class="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-orange-700">Admin Sign In <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                <a href="/teacher" class="portal-choice-card group rounded-2xl border border-orange-100 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg">
+                    <span class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-xl text-blue-700 group-hover:bg-blue-600 group-hover:text-white"><i class="fa-solid fa-chalkboard-user"></i></span>
+                    <span class="block text-lg font-extrabold text-slate-900">Teacher Portal</span>
+                    <span class="mt-2 block text-xs leading-5 text-slate-500">Enter student scores, calculate grades, and manage academic results.</span>
+                    <span class="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-blue-700">Teacher Sign In <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+                <a href="/student" class="portal-choice-card group rounded-2xl border border-orange-100 bg-white p-6 text-left shadow-sm transition hover:-translate-y-1 hover:border-orange-300 hover:shadow-lg">
+                    <span class="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-xl text-green-700 group-hover:bg-green-600 group-hover:text-white"><i class="fa-solid fa-user-graduate"></i></span>
+                    <span class="block text-lg font-extrabold text-slate-900">Student Portal</span>
+                    <span class="mt-2 block text-xs leading-5 text-slate-500">Check fees, payment status, balances, and released results.</span>
+                    <span class="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-green-700">Student Sign In <i class="fa-solid fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 1. TEACHER AUTHENTICATION (LOGIN & RESET)   -->
+        <!-- ========================================== -->
+        <section id="auth-section" class="hidden max-w-md mx-auto my-8">
+            
+            <!-- TEACHER LOGIN CARD -->
+            <div id="login-card" class="bg-white p-8 rounded-3xl shadow-xl border border-orange-100 space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-amber-500"></div>
+                
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <h2 id="staff-login-title" class="text-2xl font-extrabold text-slate-900">Teacher Login</h2>
+                    <p id="login-portal-description" class="text-xs text-slate-500">Sign in with an account created by your school administrator</p>
+                </div>
+
+                <form onsubmit="handleTeacherLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Username or Email</label>
+                        <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3.5 top-3.5 text-orange-400"></i>
+                        <input type="text" id="login-username" autocomplete="username" placeholder="Enter your username or email" required class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold uppercase text-slate-700">Password</label>
+                            <button type="button" onclick="showForgotPassword()" class="text-xs text-orange-600 hover:text-orange-700 font-bold">Forgot Password?</button>
+                        </div>
+                        <div class="relative">
+                            <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-orange-400"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password" required class="w-full pl-10 pr-12 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                            <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-orange-600" aria-label="Show password" aria-pressed="false">
+                                <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-800 flex items-start space-x-2">
+                        <i class="fa-solid fa-circle-info text-orange-500 mt-0.5"></i>
+                        <span id="login-mode-note">Use your teacher account to sign in.</span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-600/20 transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider">
+                        <span>Access Portal</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+                <div class="text-center">
+                    <a href="/" class="text-xs font-bold text-orange-700 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>Choose a different portal</a>
+                </div>
+            </div>
+
+            <div id="admin-setup-card" class="hidden bg-white p-8 rounded-3xl shadow-xl border border-orange-100 space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-amber-500"></div>
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Create Admin Account</h2>
+                    <p class="text-xs text-slate-500">First-time setup only. Use the school email and choose a strong password.</p>
+                </div>
+                <form onsubmit="createInitialAdminAccount(event)" class="space-y-4">
+                    <div>
+                        <label for="initial-admin-email" class="block text-xs font-bold uppercase text-slate-700 mb-1">School Email</label>
+                        <input type="email" id="initial-admin-email" required maxlength="254" autocomplete="email" placeholder="admin@school.edu" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label for="initial-admin-password" class="block text-xs font-bold uppercase text-slate-700 mb-1">Create Password</label>
+                        <input type="password" id="initial-admin-password" required minlength="12" maxlength="128" autocomplete="new-password" placeholder="At least 12 characters" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label for="initial-admin-confirm-password" class="block text-xs font-bold uppercase text-slate-700 mb-1">Confirm Password</label>
+                        <input type="password" id="initial-admin-confirm-password" required minlength="12" maxlength="128" autocomplete="new-password" placeholder="Enter the password again" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                    </div>
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-800">
+                        Only one admin account can be created here. Keep the school email and password safe.
+                    </div>
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-xs uppercase tracking-wider">
+                        Create Account & Enter Admin Portal
+                    </button>
+                </form>
+                <div class="text-center">
+                    <a href="/" class="text-xs font-bold text-orange-700 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i>Choose a different portal</a>
+                </div>
+            </div>
+
+            <!-- FORGOT PASSWORD / RESET CARD -->
+            <div id="reset-card" class="hidden bg-white p-8 rounded-3xl shadow-xl border border-orange-100 space-y-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-amber-500"></div>
+
+                <div class="text-center space-y-2">
+                    <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mx-auto text-2xl shadow-inner">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Reset Password</h2>
+                    <p class="text-xs text-slate-500">Request a one-time code at your registered account email</p>
+                </div>
+
+                <form onsubmit="handlePasswordReset(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Registered Account Email</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-orange-400"></i>
+                            <input type="email" id="reset-email" required placeholder="teacher@miracle.edu" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-600/20 transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider">
+                        <span>Send Reset Code</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <form id="reset-code-form" onsubmit="handlePasswordChange(event)" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1" for="reset-code">Email reset code</label>
+                        <input type="text" id="reset-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required placeholder="6-digit code" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1" for="new-password">New password</label>
+                        <input type="password" id="new-password" minlength="8" maxlength="128" autocomplete="new-password" required placeholder="At least 8 characters" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 text-xs font-medium outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-600/20 transition flex items-center justify-center space-x-2 text-xs uppercase tracking-wider">
+                        <span>Reset Password</span>
+                        <i class="fa-solid fa-key"></i>
+                    </button>
+                </form>
+
+                <div class="text-center">
+                    <button type="button" onclick="showLogin()" class="text-xs text-slate-500 hover:text-orange-600 font-bold">Back to Login</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. TEACHER DASHBOARD & RESULT MANAGER       -->
+        <!-- ========================================== -->
+        <section id="dashboard-section" class="hidden space-y-6">
+            
+            <!-- Top Controls & Navigation Bar -->
+            <div class="bg-white p-5 rounded-2xl border border-orange-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 id="dashboard-title" class="text-xl font-extrabold text-slate-900">Miracle International School Result Portal</h1>
+                    <p id="dashboard-description" class="text-xs text-slate-500">Enter test (/30) and exam (/70) marks, calculate subject percentages, and prepare result PDFs for parents.</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="switchTab('entry')" id="tab-btn-entry" class="tab-btn bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center space-x-2">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Enter New Results</span>
+                    </button>
+                    <button onclick="switchTab('database')" id="tab-btn-database" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span>Student Database & Search</span>
+                    </button>
+                    <button onclick="switchTab('subjects')" id="tab-btn-subjects" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders"></i>
+                        <span>Manage Subjects</span>
+                    </button>
+                    <button onclick="switchTab('admin')" id="tab-btn-admin" class="tab-btn hidden bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>Admin: Teachers</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: RESULT ENTRY & COMPUTATION MODULE -->
+            <div id="tab-content-entry" class="space-y-6">
+                <form onsubmit="saveStudentResult(event)" class="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm space-y-6">
+                    
+                    <div class="border-b border-slate-100 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h2 class="text-base font-bold text-slate-900 flex items-center space-x-2">
+                            <span class="w-3 h-3 bg-orange-500 rounded-full"></span>
+                            <span>Student Demographic & Result Entry Form</span>
+                        </h2>
+                        <span class="text-xs font-mono bg-orange-50 text-orange-700 px-3 py-1 rounded-full border border-orange-200 font-bold">Auto-Percentage Calculator Active</span>
+                    </div>
+
+                    <!-- Student Demographic Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
+                            <input type="text" id="std-name" required placeholder="e.g. David Adebayo" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Student ID Number *</label>
+                            <input type="text" id="std-id" required placeholder="e.g. MIS/2026/104" onblur="loadSavedResultForEditing(false)" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-mono font-bold">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Student Sex / Gender *</label>
+                            <select id="std-sex" required class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-medium">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Class / Grade *</label>
+                            <select id="std-class" required class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-medium">
+                                <option value="Primary 1">Primary 1</option>
+                                <option value="Primary 2">Primary 2</option>
+                                <option value="Primary 3">Primary 3</option>
+                                <option value="Primary 4">Primary 4</option>
+                                <option value="Primary 5">Primary 5</option>
+                                <option value="JSS 1">JSS 1</option>
+                                <option value="JSS 2">JSS 2</option>
+                                <option value="JSS 3">JSS 3</option>
+                                <option value="SS 1">SS 1</option>
+                                <option value="SS 2">SS 2</option>
+                                <option value="SS 3">SS 3</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Parent WhatsApp Number *</label>
+                            <div class="relative">
+                                <i class="fa-brands fa-whatsapp absolute left-3 top-3 text-whatsapp-500 text-sm"></i>
+                                <input type="tel" id="std-phone" required placeholder="e.g. 2348012345678" class="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-mono">
+                            </div>
+                            <span class="text-[10px] text-slate-400">Include country code (e.g. 234)</span>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1" for="std-class-size">Total Students in Class *</label>
+                            <input type="number" id="std-class-size" min="1" step="1" required placeholder="e.g. 35" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none font-semibold">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Academic Session / Term</label>
+                            <input type="text" id="std-session" value="2025/2026 - 1st Term" required onchange="loadSavedResultForEditing(false)" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none bg-slate-50 font-semibold">
+                        </div>
+
+                        <div class="flex items-end">
+                            <button type="button" onclick="loadSavedResultForEditing()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl">
+                                <i class="fa-solid fa-folder-open mr-1"></i> Load Saved Test Result
+                            </button>
+                        </div>
+                    </div>
+                    <p id="saved-result-status" role="status" class="text-xs text-slate-500 -mt-3">Enter a saved student's ID and session to load their result; saved results can be searched again by ID.</p>
+
+                    <!-- Subjects Score Grid -->
+                    <div class="space-y-3 pt-4 border-t border-slate-100">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-orange-800">Academic Assessment Scores (Test /30 | Exam /70)</h3>
+                            <span id="subject-count-tag" class="text-[11px] text-slate-500">Configured Subjects: 5</span>
+                        </div>
+
+                        <div id="score-input-scroll" class="overflow-x-auto border border-slate-200 rounded-xl">
+                            <table id="score-input-table" class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-orange-500 text-white uppercase text-[10px] font-bold">
+                                        <th class="p-3">Subject Name</th>
+                                        <th class="p-3 text-center w-32">Test Score (/30)</th>
+                                        <th class="p-3 text-center w-32">Exam Score (/70, optional)</th>
+                                        <th id="subject-total-header" class="p-3 text-center w-32">Total / Test Status</th>
+                                        <th class="p-3 text-center w-28">Percentage</th>
+                                        <th class="p-3 text-center w-28">Grade</th>
+                                        <th class="p-3 text-center w-28">Remark</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="score-input-rows" class="divide-y divide-slate-100">
+                                    <!-- Dynamic Rows Rendered Here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Computation Summary Box -->
+                    <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-5 rounded-2xl border border-orange-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                            <div>
+                                <span id="summary-total-label" class="text-slate-500 block">Test Marks Obtained:</span>
+                                <span id="summary-total" class="text-lg font-black text-slate-900">0</span>
+                            </div>
+                            <div>
+                                <span id="summary-max-label" class="text-slate-500 block">Maximum Test Marks:</span>
+                                <span id="summary-max" class="text-lg font-black text-slate-900">500</span>
+                            </div>
+                            <div>
+                                <span id="summary-percentage-label" class="text-slate-500 block">Test Percentage:</span>
+                                <span id="summary-percentage" class="text-2xl font-black text-orange-600">0.0%</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">Overall Grade / Remark:</span>
+                                <span id="summary-grade" class="text-lg font-extrabold text-slate-800">Enter test marks</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-orange-600/20 transition flex items-center justify-center space-x-2 shrink-0">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Save / Update Result</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                        <div>
+                            <label for="std-teacher-comment" class="block text-xs font-bold text-slate-700 mb-1">Teacher's Comment</label>
+                            <textarea id="std-teacher-comment" maxlength="1000" rows="3" placeholder="Enter the teacher's comment for this pupil" class="w-full p-3 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none resize-y"></textarea>
+                        </div>
+                        <div>
+                            <label for="std-principal-comment" class="block text-xs font-bold text-slate-700 mb-1">Principal's Comment</label>
+                            <textarea id="std-principal-comment" maxlength="1000" rows="3" placeholder="Enter the principal's comment for this pupil" class="w-full p-3 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none resize-y"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: STUDENT DATABASE, SEARCH BY ID & WHATSAPP BROADCAST -->
+            <div id="tab-content-database" class="hidden space-y-6">
+                
+                <!-- Search & Filter Controls Bar -->
+                <div class="bg-white p-5 rounded-2xl border border-orange-100 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-sm">Search & Locate Student Results</h3>
+                    <p id="result-storage-notice" class="text-[11px] text-slate-500">Results are saved in this browser on this device. Use the backup download regularly; browser data does not sync between devices.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-orange-400"></i>
+                            <input type="text" id="search-id" oninput="filterStudents()" placeholder="Search by Student ID (e.g. MIS/2026/101)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono font-bold focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+
+                        <div class="relative">
+                            <i class="fa-solid fa-filter absolute left-3.5 top-3.5 text-orange-400"></i>
+                            <select id="filter-class" onchange="filterStudents()" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold focus:ring-2 focus:ring-orange-500 outline-none">
+                                <option value="">All Classes</option>
+                                <option value="Primary 1">Primary 1</option>
+                                <option value="Primary 2">Primary 2</option>
+                                <option value="Primary 3">Primary 3</option>
+                                <option value="Primary 4">Primary 4</option>
+                                <option value="Primary 5">Primary 5</option>
+                                <option value="JSS 1">JSS 1</option>
+                                <option value="JSS 2">JSS 2</option>
+                                <option value="JSS 3">JSS 3</option>
+                                <option value="SS 1">SS 1</option>
+                                <option value="SS 2">SS 2</option>
+                                <option value="SS 3">SS 3</option>
+                            </select>
+                        </div>
+
+                        <div class="relative">
+                            <i class="fa-solid fa-venus-mars absolute left-3.5 top-3.5 text-orange-400"></i>
+                            <select id="filter-sex" onchange="filterStudents()" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold focus:ring-2 focus:ring-orange-500 outline-none">
+                                <option value="">All Sex / Genders</option>
+                                <option value="Male">Male Only</option>
+                                <option value="Female">Female Only</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saved Results Data Table -->
+                <div class="bg-white rounded-2xl border border-orange-100 shadow-sm overflow-hidden">
+                    <div class="flex justify-end p-4 border-b border-slate-100">
+                        <input type="file" id="results-backup-input" accept="application/json,.json" onchange="importResultsBackup(event)" class="hidden">
+                        <button type="button" onclick="document.getElementById('results-backup-input').click()" class="mr-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg">
+                            <i class="fa-solid fa-upload mr-1"></i> Restore Backup
+                        </button>
+                        <button type="button" onclick="exportResultsBackup()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2 rounded-lg">
+                            <i class="fa-solid fa-download mr-1"></i> Download Results Backup
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900 text-white uppercase text-[10px]">
+                                    <th class="p-3.5">Student ID</th>
+                                    <th class="p-3.5">Student Name</th>
+                                    <th class="p-3.5">Sex</th>
+                                    <th class="p-3.5">Class</th>
+                                    <th class="p-3.5">Session / Term</th>
+                                    <th class="p-3.5">Exam Status</th>
+                                    <th class="p-3.5 text-center">Percentage</th>
+                                    <th class="p-3.5 text-center">Grade</th>
+                                    <th class="p-3.5 text-center">Remark</th>
+                                    <th class="p-3.5 text-right">Report / Email / WhatsApp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-database-tbody" class="divide-y divide-slate-100 font-medium">
+                                <!-- Dynamic Student Records injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: ADJUSTABLE SUBJECT MANAGEMENT -->
+            <div id="tab-content-subjects" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Subject Creator Panel -->
+                    <div class="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-900 text-sm border-b border-slate-100 pb-3">Add Custom Subject</h3>
+                        <form onsubmit="addNewSubject(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Subject Name</label>
+                                <input type="text" id="new-subject-name" required placeholder="e.g. Basic Science" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            </div>
+                            <p id="subject-limit-status" class="text-[11px] text-slate-500">0 of 15 subjects used. You can add up to 10 more to the original five.</p>
+                            <button id="add-subject-button" type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold py-2.5 rounded-xl shadow transition">
+                                <i class="fa-solid fa-plus mr-1"></i> Add Subject to List
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Configured Subject List -->
+                    <div class="md:col-span-2 bg-white p-6 rounded-2xl border border-orange-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <h3 class="font-bold text-slate-900 text-sm">Configured Curriculum Subjects</h3>
+                            <span class="text-xs text-orange-600 font-bold">Adjustable list</span>
+                        </div>
+                        <ul id="subject-list-container" class="divide-y divide-slate-100 text-xs">
+                            <!-- Dynamic Subject Items -->
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="tab-content-admin" class="hidden space-y-6">
+                <div class="space-y-5 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:p-6">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h2 class="text-lg font-extrabold text-slate-900">School Fees & Student Overview</h2>
+                            <p class="mt-1 text-xs text-slate-500">Payments submitted by students remain pending until an admin verifies them. Only approved payments reduce the outstanding balance.</p>
+                        </div>
+                        <div class="flex flex-wrap items-end gap-2">
+                            <label for="admin-finance-session" class="text-xs font-bold text-slate-700">Session / Term
+                                <input id="admin-finance-session" value="2025/2026 - 1st Term" class="mt-1 w-56 rounded-lg border border-slate-200 px-3 py-2 text-xs">
+                            </label>
+                            <button type="button" onclick="loadFinanceDashboard()" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-slate-800"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-orange-200 bg-orange-50 p-4">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-700">Total school students</p>
+                                <p id="school-total-students" class="mt-1 text-2xl font-black text-slate-900">0</p>
+                            </div>
+                            <div class="text-xs text-slate-600">
+                                The full school roster total updates whenever the student CSV is imported.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 lg:grid-cols-6">
+                        <div class="rounded-xl bg-slate-50 p-4"><p class="text-[10px] font-bold uppercase text-slate-500">Students</p><p id="finance-total-students" class="mt-1 text-xl font-black">0</p></div>
+                        <div class="rounded-xl bg-slate-50 p-4"><p class="text-[10px] font-bold uppercase text-slate-500">Fees Configured</p><p id="finance-configured-count" class="mt-1 text-xl font-black">0</p></div>
+                        <div class="rounded-xl bg-blue-50 p-4"><p class="text-[10px] font-bold uppercase text-blue-700">Total Due</p><p id="finance-total-due" class="mt-1 text-lg font-black text-blue-900">₦0</p></div>
+                        <div class="rounded-xl bg-green-50 p-4"><p class="text-[10px] font-bold uppercase text-green-700">Approved Payments</p><p id="finance-total-paid" class="mt-1 text-lg font-black text-green-900">₦0</p></div>
+                        <div class="rounded-xl bg-orange-50 p-4"><p class="text-[10px] font-bold uppercase text-orange-700">Outstanding</p><p id="finance-total-balance" class="mt-1 text-lg font-black text-orange-900">₦0</p></div>
+                        <div class="rounded-xl bg-amber-50 p-4"><p class="text-[10px] font-bold uppercase text-amber-700">Pending Claims</p><p id="finance-pending" class="mt-1 text-lg font-black text-amber-900">0</p></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                        <form onsubmit="saveClassFee(event)" class="rounded-xl border border-slate-200 p-4">
+                            <h3 class="font-bold text-slate-900">Set Class Fee</h3>
+                            <p class="mb-3 mt-1 text-[11px] text-slate-500">Sets the default fee for this class and session. Student-specific fees can override it below.</p>
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                                <label class="text-xs font-bold">Class
+                                    <input id="fee-class-name" required maxlength="80" placeholder="e.g. JSS 1" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+                                </label>
+                                <label class="text-xs font-bold">Amount (NGN)
+                                    <input id="fee-class-amount" required type="number" min="0" step="0.01" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+                                </label>
+                                <button class="self-end rounded-lg bg-orange-600 px-3 py-2 text-xs font-bold text-white hover:bg-orange-700">Save Class Fee</button>
+                            </div>
+                        </form>
+
+                        <div class="rounded-xl border border-slate-200 p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="font-bold text-slate-900">Import Students & Login Passwords (CSV)</h3>
+                                    <p class="mt-1 text-[11px] text-slate-500">Required: studentId, name, class, guardianEmail. Optional: guardianPhone, studentPassword (at least 8 characters).</p>
+                                </div>
+                                <button type="button" onclick="downloadStudentCsvTemplate()" class="text-xs font-bold text-orange-700 hover:underline">Download CSV Template</button>
+                            </div>
+                            <div class="mt-3 flex flex-wrap items-center gap-3">
+                                <input id="student-csv-file" type="file" accept=".csv,text/csv" class="max-w-full text-xs">
+                                <button type="button" onclick="importStudentRoster()" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white hover:bg-slate-800">Import CSV</button>
+                            </div>
+                            <p class="mt-2 text-[10px] text-slate-500">Passwords are stored securely as hashes. Keep the CSV private and delete it securely after distributing credentials. Leaving studentPassword blank preserves any existing password.</p>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-green-200 bg-green-50 p-4">
+                        <h3 class="font-bold text-slate-900">Create a Student Portal Account</h3>
+                        <p class="mb-3 mt-1 text-[11px] text-slate-600">The admin creates the student's ID and password. Give the student their ID and password privately.</p>
+                        <form onsubmit="createStudentAccount(event)" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                            <label class="text-xs font-bold">Student ID
+                                <input id="admin-student-id" required maxlength="80" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="e.g. MIS/2026/101">
+                            </label>
+                            <label class="text-xs font-bold">Student Name
+                                <input id="admin-student-name" required maxlength="120" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="Student full name">
+                            </label>
+                            <label class="text-xs font-bold">Class
+                                <input id="admin-student-class" required maxlength="80" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="e.g. JSS 1">
+                            </label>
+                            <label class="text-xs font-bold">Guardian Email
+                                <input id="admin-student-guardian-email" type="email" required maxlength="254" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="parent@example.com">
+                            </label>
+                            <label class="text-xs font-bold">Guardian Phone (optional)
+                                <input id="admin-student-guardian-phone" type="tel" maxlength="30" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="Phone number">
+                            </label>
+                            <label class="text-xs font-bold">Student Password
+                                <input id="admin-student-password" type="password" required minlength="8" maxlength="128" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="At least 8 characters">
+                            </label>
+                            <button type="submit" class="rounded-lg bg-green-700 px-3 py-2 text-xs font-bold text-white hover:bg-green-800 sm:col-span-2 lg:col-span-3">Create Student Account</button>
+                        </form>
+                    </div>
+
+                    <div class="rounded-xl border border-orange-200 bg-orange-50 p-4">
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h3 class="font-extrabold text-slate-900">Admin Security</h3>
+                                <p class="mt-1 text-[11px] text-slate-600">Set your own admin password for future sign-ins.</p>
+                            </div>
+                        </div>
+                        <form onsubmit="updateAdminPassword(event)" class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">
+                            <div class="md:col-span-1">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Current Password</label>
+                                <input id="admin-current-password" type="password" required minlength="8" maxlength="128" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">New Password</label>
+                                <input id="admin-new-password" type="password" required minlength="8" maxlength="128" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Confirm New Password</label>
+                                <input id="admin-confirm-password" type="password" required minlength="8" maxlength="128" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            </div>
+                            <div class="md:col-span-1 flex items-end">
+                                <button type="submit" class="w-full rounded-xl bg-orange-600 px-3 py-2.5 text-xs font-bold text-white hover:bg-orange-700">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full min-w-[760px] text-left text-xs">
+                            <thead><tr class="bg-slate-900 text-[10px] uppercase text-white">
+                                <th class="p-3">Student</th><th class="p-3">Class</th><th class="p-3">Fee Due</th><th class="p-3">Paid</th><th class="p-3">Balance</th><th class="p-3 text-right">Admin Actions</th>
+                            </tr></thead>
+                            <tbody id="admin-finance-students" class="divide-y divide-slate-100">
+                                <tr><td colspan="6" class="p-4 text-center text-slate-500">Load the finance dashboard to view students.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+                    <div class="space-y-4 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900">Payment Verification</h3>
+                            <p class="mt-1 text-xs text-slate-500">Approve only after confirming the student's payment in the school's bank or payment records.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[520px] text-left text-xs">
+                                <thead><tr class="border-b text-[10px] uppercase text-slate-500"><th class="p-2">Student</th><th class="p-2">Amount</th><th class="p-2">Reference</th><th class="p-2">Status</th><th class="p-2">Action</th></tr></thead>
+                                <tbody id="admin-payment-rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="space-y-4 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900">Release Student Results</h3>
+                            <p class="mt-1 text-xs text-slate-500">Only results with a fully paid, admin-confirmed fee can be released to the student's portal. Editing a result hides it again until re-released.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[460px] text-left text-xs">
+                                <thead><tr class="border-b text-[10px] uppercase text-slate-500"><th class="p-2">Student</th><th class="p-2">Session</th><th class="p-2">Fee Balance</th><th class="p-2">Release</th></tr></thead>
+                                <tbody id="admin-result-release-rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-orange-100 shadow-sm space-y-5">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-900">Teacher Accounts</h2>
+                        <p class="mt-1 text-xs text-slate-500">Create staff accounts, disable access, or remove accounts. Disabled and removed teachers are signed out immediately.</p>
+                    </div>
+                    <form onsubmit="createTeacherAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+                        <div>
+                            <label for="admin-teacher-username" class="block text-xs font-bold text-slate-700 mb-1">Teacher Username</label>
+                            <input id="admin-teacher-username" type="text" required minlength="3" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}" autocomplete="off" placeholder="e.g. teacher.jane" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            <p class="mt-1 text-[10px] text-slate-500">3-32 letters, numbers, dots, underscores, or hyphens.</p>
+                        </div>
+                        <div>
+                            <label for="admin-teacher-email" class="block text-xs font-bold text-slate-700 mb-1">Teacher Email</label>
+                            <input id="admin-teacher-email" type="email" required maxlength="254" autocomplete="email" placeholder="teacher@school.edu" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+                        <div>
+                            <label for="admin-teacher-password" class="block text-xs font-bold text-slate-700 mb-1">Teacher Password</label>
+                            <input id="admin-teacher-password" type="password" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="At least 8 characters" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+                        <button type="submit" class="bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition">
+                            <i class="fa-solid fa-user-plus mr-1"></i> Create Teacher Account
+                        </button>
+                    </form>
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <h3 class="font-bold text-slate-900 text-sm">Registered Teachers</h3>
+                        <button type="button" onclick="loadTeacherAccounts()" class="text-xs font-bold text-orange-600 hover:text-orange-700">
+                            <i class="fa-solid fa-rotate mr-1"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900 text-white uppercase text-[10px]">
+                                    <th class="p-3">Teacher Username</th>
+                                    <th class="p-3">Teacher Email</th>
+                                    <th class="p-3">Created</th>
+                                    <th class="p-3 text-center">Active Sessions</th>
+                                    <th class="p-3 text-center">Account Status</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-teachers-tbody" class="divide-y divide-slate-100 font-medium">
+                                <tr><td colspan="6" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. PRINTABLE OFFICIAL REPORT CARD MODAL    -->
+        <!-- ========================================== -->
+        <div id="report-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+            <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+                <button onclick="closeReportModal()" class="no-print absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-900 text-sm">Official Terminal Report Card Preview</h3>
+                    <div class="space-x-2 no-print">
+                        <button onclick="printReportPdf()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Download / Print PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Printable Document Content -->
+                <div id="printable-report-card" class="space-y-6">
+                    <div class="text-center border-b-2 border-orange-600 pb-4">
+                        <h2 class="text-2xl font-black text-orange-600 uppercase tracking-tight">Miracle International School</h2>
+                        <p class="text-xs text-slate-600">12 Victory Avenue, Lagos • Official Academic Progress Report</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs bg-orange-50/50 p-4 rounded-xl border border-orange-200">
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Student Name:</span><span id="rc-name" class="font-extrabold text-slate-900">--</span></div>
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Student ID:</span><span id="rc-id" class="font-mono font-bold text-slate-900">--</span></div>
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Sex:</span><span id="rc-sex" class="font-bold text-slate-900">--</span></div>
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Class:</span><span id="rc-class" class="font-bold text-slate-900">--</span></div>
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Total Students in Class:</span><span id="rc-class-size" class="font-bold text-slate-900">--</span></div>
+                        <div><span class="text-slate-400 block uppercase font-bold text-[9px]">Session / Term:</span><span id="rc-session" class="font-bold text-slate-900">--</span></div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-orange-600 text-white uppercase text-[9px]">
+                                    <th class="p-2">Subject</th>
+                                    <th class="p-2 text-center">Test (30)</th>
+                                    <th id="report-exam-header" class="p-2 text-center">Exam (70)</th>
+                                    <th id="report-total-header" class="p-2 text-center">Total (100)</th>
+                                    <th id="report-percentage-header" class="p-2 text-center">Percentage</th>
+                                    <th class="p-2 text-center">Grade</th>
+                                    <th class="p-2 text-center">Remark</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rc-table-body" class="divide-y divide-slate-200 font-medium text-slate-800">
+                                <!-- Dynamic Score Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span id="report-overall-percentage-label" class="font-bold text-slate-700 block">Overall Percentage:</span>
+                            <span id="rc-percentage" class="text-xl font-black text-orange-600">0%</span>
+                        </div>
+                        <div>
+                            <span class="font-bold text-slate-700 block">Overall Grade / Remark:</span>
+                            <span id="rc-final-grade" class="text-lg font-bold text-slate-800">--</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="rounded-xl border border-slate-200 p-3">
+                            <span class="font-bold text-slate-700 block mb-1">Teacher's Comment</span>
+                            <p id="rc-teacher-comment" class="whitespace-pre-wrap text-slate-700">—</p>
+                        </div>
+                        <div class="rounded-xl border border-slate-200 p-3">
+                            <span class="font-bold text-slate-700 block mb-1">Principal's Comment</span>
+                            <p id="rc-principal-comment" class="whitespace-pre-wrap text-slate-700">—</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="welcome-splash" class="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-orange-700 via-orange-600 to-amber-500 px-5 text-center text-white">
+        <div class="max-w-xl">
+            <div class="welcome-mark mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl border border-white/30 bg-white/15 text-4xl shadow-2xl backdrop-blur">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-orange-100">Miracle International School</p>
+            <h2 class="mt-4 text-3xl font-black leading-tight sm:text-5xl">Welcome to Miracle International School Portal</h2>
+            <p class="mt-3 text-sm text-orange-50">Learning, results, and school services in one place</p>
+            <div class="mx-auto mt-8 h-1.5 w-40 overflow-hidden rounded-full bg-white/30">
+                <div class="h-full w-full origin-left animate-[welcome-progress_1.6s_ease-in-out_forwards] rounded-full bg-white"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST AGENT -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 max-w-sm border border-slate-700 no-print">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-orange-500 text-lg"></i>
+        <div class="text-xs">
+            <div id="toast-title" class="font-bold">Notification</div>
+            <div id="toast-msg" class="text-slate-300">Action completed successfully.</div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // SYSTEM STATE & LOCAL DATABASE
+        // ==========================================
+        let appState = {
+            teacherLoggedIn: false,
+            teacherEmail: 'teacher@miracle.edu',
+            teacherRole: 'teacher',
+            
+            // Adjustable Subject Master List
+            subjects: ['Mathematics', 'English Language', 'Basic Science', 'Social Studies', 'Civic Education'],
+
+            // Saved Student Results Collection
+            students: [
+                {
+                    id: 'MIS/2026/101',
+                    name: 'Emmanuel Johnson ',
+                    sex: 'Male',
+                    class: 'JSS 1',
+                    phone: '2348031234567',
+                    session: '2025/2026 - 1st Term',
+                    scores: {
+                        'Mathematics': { test: 30, exam: 57 },
+                        'English Language': { test: 30, exam: 48 },
+                        'Basic Science': { test: 30, exam: 63 },
+                        'Social Studies': { test: 30, exam: 52 },
+                        'Civic Education': { test: 30, exam: 50 }
+                    },
+                    totalMarks: 420,
+                    maxMarks: 500,
+                    percentage: 84.0,
+                    grade: 'A',
+                    remark: 'Excellent'
+                }
+            ]
+        };
+
+        const RESULT_DB_NAME = 'miracle-school-results';
+        const RESULT_DB_VERSION = 2;
+        const MAX_SUBJECTS = 15;
+        const isLocalFile = window.location.protocol === 'file:';
+        let selectedStaffPortal = '';
+        let rememberedStaffProfile = null;
+        let resultDatabase;
+        let databaseReady = false;
+
+        function openResultDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(RESULT_DB_NAME, RESULT_DB_VERSION);
+                request.onupgradeneeded = () => {
+                    const database = request.result;
+                    if (!database.objectStoreNames.contains('results')) {
+                        database.createObjectStore('results', { keyPath: 'recordKey' });
+                    }
+                    if (!database.objectStoreNames.contains('settings')) {
+                        database.createObjectStore('settings', { keyPath: 'key' });
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function runDatabaseRequest(storeName, mode, operation) {
+            return new Promise((resolve, reject) => {
+                const transaction = resultDatabase.transaction(storeName, mode);
+                const request = operation(transaction.objectStore(storeName));
+                let result;
+
+                request.onsuccess = () => { result = request.result; };
+                request.onerror = () => reject(request.error);
+                transaction.oncomplete = () => resolve(result);
+                transaction.onerror = () => reject(transaction.error);
+                transaction.onabort = () => reject(transaction.error || new Error('Database transaction was aborted.'));
+            });
+        }
+
+        function getResultKey(studentId, session) {
+            return JSON.stringify([studentId.trim().toLowerCase(), session.trim().toLowerCase()]);
+        }
+
+        async function requestSchoolApi(path, options = {}) {
+            const response = await fetch(path, {
+                ...options,
+                credentials: 'same-origin',
+                headers: {
+                    ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+                    ...options.headers
+                }
+            });
+            if (!response.ok) {
+                let message = 'The school database request failed.';
+                if (response.status === 404) {
+                    message = 'The Node database service is not deployed at this website. Host the portal with server.js and a persistent database disk.';
+                }
+                try {
+                    const body = await response.json();
+                    if (body && typeof body.error === 'string') message = body.error;
+                } catch (error) {
+                    console.error('Could not read the school database error response:', error);
+                }
+                throw new Error(message);
+            }
+            return response.status === 204 ? null : response.json();
+        }
+
+        async function synchronizeSchoolDatabase() {
+            if (rememberedStaffProfile?.role !== 'admin') {
+                await requestSchoolApi('/api/results/migrate', {
+                    method: 'POST',
+                    body: JSON.stringify({ results: appState.students, subjects: appState.subjects })
+                });
+            }
+            const [students, subjects] = await Promise.all([
+                requestSchoolApi('/api/results'),
+                requestSchoolApi('/api/subjects')
+            ]);
+            appState.students = students;
+            appState.subjects = subjects;
+
+            if (resultDatabase) {
+                try {
+                    await Promise.all([
+                        ...students.map(student =>
+                            runDatabaseRequest('results', 'readwrite', store => store.put(student))
+                        ),
+                        runDatabaseRequest('settings', 'readwrite', store =>
+                            store.put({ key: 'subjects', value: subjects })
+                        )
+                    ]);
+                } catch (error) {
+                    console.error('Central data loaded, but the local browser cache could not be updated:', error);
+                }
+            }
+            databaseReady = true;
+            renderSubjectRows();
+            renderSubjectManagerList();
+            renderStudentDatabase();
+        }
+
+        async function saveSubjects(subjects) {
+            if (isLocalFile) {
+                if (!databaseReady) throw new Error('Browser storage is not ready. Reload the page and try again.');
+                await runDatabaseRequest('settings', 'readwrite', store => store.put({ key: 'subjects', value: subjects }));
+                return;
+            }
+            await requestSchoolApi('/api/subjects', {
+                method: 'PUT',
+                body: JSON.stringify({ subjects })
+            });
+            if (resultDatabase) {
+                try {
+                    await runDatabaseRequest('settings', 'readwrite', store => store.put({ key: 'subjects', value: subjects }));
+                } catch (error) {
+                    console.error('Subject list saved centrally, but the local browser cache could not be updated:', error);
+                }
+            }
+        }
+
+        async function initializeResultDatabase() {
+            resultDatabase = await openResultDatabase();
+            const [savedResults, savedSettings] = await Promise.all([
+                runDatabaseRequest('results', 'readonly', store => store.getAll()),
+                runDatabaseRequest('settings', 'readonly', store => store.get('subjects'))
+            ]);
+
+            if (savedResults.length) {
+                appState.students = savedResults.map(student => {
+                    const scores = Object.fromEntries(Object.entries(student.scores || {}).map(([subject, score]) => [
+                        subject,
+                        { test: score.test, exam: Number.isFinite(score.exam) ? score.exam : null }
+                    ]));
+                    const examComplete = Object.keys(scores).length > 0 &&
+                        Object.values(scores).every(score => Number.isFinite(score.exam));
+                    const totalMarks = Object.values(scores).reduce((total, score) =>
+                        total + score.test + (examComplete ? score.exam : 0), 0);
+                    const maxMarks = Object.keys(scores).length * (examComplete ? 100 : 30);
+                    const percentage = Number(((totalMarks / maxMarks) * 100).toFixed(1));
+                    return {
+                        ...student,
+                        recordKey: student.recordKey || getResultKey(student.id, student.session),
+                        teacherComment: student.teacherComment || '',
+                        principalComment: student.principalComment || '',
+                        scores,
+                        examComplete,
+                        totalMarks,
+                        maxMarks,
+                        percentage,
+                        grade: calculateGrade(percentage),
+                        remark: calculateRemark(percentage)
+                    };
+                });
+                await Promise.all(appState.students.map(student =>
+                    runDatabaseRequest('results', 'readwrite', store => store.put(student))
+                ));
+            } else {
+                appState.students = appState.students.map(student => ({
+                    ...student,
+                    recordKey: getResultKey(student.id, student.session),
+                    examComplete: true,
+                    classSize: student.classSize || null,
+                    remark: calculateRemark(student.percentage)
+                }));
+                await Promise.all(appState.students.map(student =>
+                    runDatabaseRequest('results', 'readwrite', store => store.put(student))
+                ));
+            }
+
+            if (savedSettings && Array.isArray(savedSettings.value)) {
+                appState.subjects = savedSettings.value;
+            } else {
+                await runDatabaseRequest('settings', 'readwrite', store =>
+                    store.put({ key: 'subjects', value: appState.subjects })
+                );
+            }
+
+            databaseReady = true;
+        }
+
+        // DOM Initialization
+        document.addEventListener("DOMContentLoaded", async () => {
+            const splash = document.getElementById('welcome-splash');
+            window.setTimeout(() => {
+                splash.classList.add('opacity-0', 'pointer-events-none');
+                window.setTimeout(() => splash.classList.add('hidden'), 500);
+            }, 1700);
+            if (isLocalFile) {
+                document.getElementById('login-username').value = 'teacher@miracle.edu';
+                document.getElementById('login-mode-note').innerHTML =
+                    'Local demo login: <code>teacher@miracle.edu</code> / <code>miracle</code>. Email resets and shared storage need the server.';
+                document.getElementById('result-storage-notice').textContent =
+                    'Results are saved in this browser on this device. Use the backup download regularly; browser data does not sync between devices.';
+            } else {
+                document.getElementById('login-mode-note').textContent =
+                    'Sign in with the username or email your school administrator gave you.';
+                document.getElementById('result-storage-notice').textContent =
+                    'Results are stored in the school database and can be searched by student ID from any teacher device signed in to this portal.';
+            }
+            renderSubjectRows();
+            renderSubjectManagerList();
+            try {
+                await initializeResultDatabase();
+                renderSubjectRows();
+                renderSubjectManagerList();
+                renderStudentDatabase();
+                if (!isLocalFile) {
+                    try {
+                        rememberedStaffProfile = await requestSchoolApi('/api/auth/session');
+                    } catch (error) {
+                        if (!error.message.includes('Sign in again')) {
+                            console.error('Could not restore the saved teacher session:', error);
+                        }
+                    }
+                }
+                if (!isLocalFile && ['/admin', '/teacher'].includes(window.location.pathname)) {
+                    await selectStaffPortal(window.location.pathname.slice(1));
+                }
+            } catch (error) {
+                console.error('Could not open the results database:', error);
+                showToast('Storage Unavailable', 'Results cannot be loaded or saved in this browser.');
+            }
+        });
+
+        // ==========================================
+        // AUTHENTICATION LOGIC (LOGIN & RESET)
+        // ==========================================
+        function togglePassword() {
+            const password = document.getElementById('login-password');
+            const toggle = password.nextElementSibling;
+            const isVisible = password.type === 'text';
+
+            password.type = isVisible ? 'password' : 'text';
+            toggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+            toggle.setAttribute('aria-pressed', String(!isVisible));
+            toggle.innerHTML = `<i class="fa-solid fa-eye${isVisible ? '' : '-slash'}" aria-hidden="true"></i>`;
+        }
+
+        async function selectStaffPortal(portal) {
+            if (!['admin', 'teacher'].includes(portal)) return;
+            selectedStaffPortal = portal;
+            if (isLocalFile && portal === 'admin') {
+                showToast('Server Required', 'The Admin Portal requires the secure school server. Only the teacher demo works from a local file.');
+                return;
+            }
+
+            if (rememberedStaffProfile) {
+                if (rememberedStaffProfile.role !== portal) {
+                    try {
+                        await requestSchoolApi('/api/auth/logout', { method: 'POST' });
+                        rememberedStaffProfile = null;
+                        showToast('Portal Account Switched', `Sign in to the ${portal} portal to continue.`);
+                    } catch (error) {
+                        console.error('Could not sign out of the other portal:', error);
+                        showToast('Unable to Switch Portals', error.message);
+                        return;
+                    }
+                } else {
+                    try {
+                        await synchronizeSchoolDatabase();
+                        enterTeacherPortal(rememberedStaffProfile, false);
+                        return;
+                    } catch (error) {
+                        console.error('Could not restore the selected portal session:', error);
+                        rememberedStaffProfile = null;
+                        showToast('Unable to Restore Session', error.message);
+                    }
+                }
+            }
+
+            document.getElementById('portal-home').classList.add('hidden');
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('reset-card').classList.add('hidden');
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('admin-setup-card').classList.add('hidden');
+            const isAdmin = portal === 'admin';
+            document.getElementById('staff-login-title').textContent = isAdmin ? 'Admin Portal Login' : 'Teacher Portal Login';
+            document.getElementById('login-portal-description').textContent = isAdmin
+                ? 'Sign in with the school email and password for the administrator account.'
+                : 'Sign in with the teacher account created by your school administrator.';
+            document.getElementById('login-mode-note').textContent = isLocalFile
+                ? 'Local demo mode is available for the teacher portal only. The admin portal requires the deployed server.'
+                : isAdmin
+                    ? 'Use the school email and password created during first-time admin setup.'
+                    : 'Sign in with the username or email your school administrator gave you.';
+
+            if (isAdmin) {
+                try {
+                    const setupStatus = await requestSchoolApi('/api/admin/setup-status');
+                    if (!setupStatus.setupComplete) {
+                        document.getElementById('admin-setup-card').classList.remove('hidden');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Could not check admin account setup:', error);
+                    showToast('Admin Portal Unavailable', error.message);
+                    return;
+                }
+            }
+            document.getElementById('login-card').classList.remove('hidden');
+        }
+
+        function returnToPortalHome() {
+            selectedStaffPortal = '';
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('portal-home').classList.remove('hidden');
+        }
+
+        async function createInitialAdminAccount(event) {
+            event.preventDefault();
+            const email = document.getElementById('initial-admin-email').value.trim();
+            const password = document.getElementById('initial-admin-password').value;
+            const confirmation = document.getElementById('initial-admin-confirm-password').value;
+            if (password !== confirmation) {
+                showToast('Password Mismatch', 'The password and confirmation do not match.');
+                return;
+            }
+            try {
+                await requestSchoolApi('/api/admin/setup', {
+                    method: 'POST',
+                    body: JSON.stringify({ email, password })
+                });
+                const profile = await requestSchoolApi('/api/auth/session');
+                if (profile.role !== 'admin') {
+                    await requestSchoolApi('/api/auth/logout', { method: 'POST' });
+                    throw new Error('The new account could not enter the admin portal.');
+                }
+                rememberedStaffProfile = profile;
+                await synchronizeSchoolDatabase();
+                event.target.reset();
+                enterTeacherPortal(profile, true);
+            } catch (error) {
+                console.error('Could not create the first admin account:', error);
+                try {
+                    const setupStatus = await requestSchoolApi('/api/admin/setup-status');
+                    if (setupStatus.setupComplete) {
+                        document.getElementById('admin-setup-card').classList.add('hidden');
+                        document.getElementById('login-card').classList.remove('hidden');
+                    }
+                } catch (statusError) {
+                    console.error('Could not refresh admin setup status:', statusError);
+                }
+                showToast('Admin Account Setup Failed', error.message);
+            }
+        }
+
+        async function handleTeacherLogin(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('login-username').value.trim();
+            const pass = document.getElementById('login-password').value;
+
+            if (isLocalFile) {
+                if (identifier.toLowerCase() !== 'teacher@miracle.edu' || pass !== 'miracle') {
+                    showToast('Login Failed', 'Use teacher@miracle.edu and the password miracle.');
+                    return;
+                }
+            } else {
+                try {
+                    await requestSchoolApi('/api/auth/login', {
+                        method: 'POST',
+                        body: JSON.stringify({ identifier, password: pass })
+                    });
+                    const profile = await requestSchoolApi('/api/auth/session');
+                    if (profile.role !== selectedStaffPortal) {
+                        await requestSchoolApi('/api/auth/logout', { method: 'POST' });
+                        throw new Error(`This account is not authorized for the ${selectedStaffPortal} portal.`);
+                    }
+                    rememberedStaffProfile = profile;
+                    await synchronizeSchoolDatabase();
+                    enterTeacherPortal(profile, true);
+                } catch (error) {
+                    console.error('Could not sign in or load the central school database:', error);
+                    try {
+                        await requestSchoolApi('/api/auth/logout', { method: 'POST' });
+                    } catch (logoutError) {
+                        console.error('Could not clear the failed login session:', logoutError);
+                    }
+                    showToast(
+                        'Portal Sign-in Failed',
+                        error.message.includes('Failed to fetch')
+                            ? 'The hosted database server is not reachable. Deploy the Node server with persistent storage to use the shared portal.'
+                            : error.message
+                    );
+                    return;
+                }
+                return;
+            }
+
+            if (selectedStaffPortal !== 'teacher') {
+                showToast('Admin Sign-in Unavailable', 'Admin access must be verified through the deployed school server.');
+                return;
+            }
+            enterTeacherPortal({ email, role: 'teacher' }, true);
+        }
+
+        function enterTeacherPortal(profile, showWelcome) {
+            appState.teacherLoggedIn = true;
+            appState.teacherEmail = profile.email;
+            appState.teacherRole = profile.role;
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('portal-home').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+            document.getElementById('nav-user-status').classList.remove('hidden');
+            document.getElementById('nav-teacher-name').innerText = profile.username || profile.email;
+            document.getElementById('nav-user-role').innerText =
+                profile.role === 'admin' ? 'School Administrator' : 'Authorized Teacher';
+            const isAdmin = profile.role === 'admin';
+            document.getElementById('dashboard-title').textContent = isAdmin
+                ? 'Miracle International School Administration'
+                : 'Miracle International School Result Portal';
+            document.getElementById('dashboard-description').textContent = isAdmin
+                ? 'Manage school enrollment, teachers, fees, payments, and result releases.'
+                : 'Enter test (/30) and exam (/70) marks, calculate subject percentages, and prepare result PDFs for parents.';
+            ['entry', 'database', 'subjects'].forEach(tab => {
+                document.getElementById(`tab-btn-${tab}`).classList.toggle('hidden', isAdmin);
+            });
+            document.getElementById('tab-btn-admin').classList.toggle('hidden', profile.role !== 'admin');
+            switchTab(isAdmin ? 'admin' : 'entry');
+            if (isAdmin) {
+                loadTeacherAccounts();
+                loadFinanceDashboard();
+            }
+            if (showWelcome) showToast('Welcome to Portal', 'Successfully logged into Miracle International School System.');
+        }
+
+        async function logoutTeacher() {
+            if (!isLocalFile) {
+                try {
+                    await requestSchoolApi('/api/auth/logout', { method: 'POST' });
+                } catch (error) {
+                    console.error('Could not end the school database session:', error);
+                    showToast('Logout Warning', 'You were signed out here, but the server could not confirm logout.');
+                }
+            }
+            appState.teacherLoggedIn = false;
+            appState.teacherRole = 'teacher';
+            rememberedStaffProfile = null;
+            document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('nav-user-status').classList.add('hidden');
+            document.getElementById('tab-btn-admin').classList.add('hidden');
+            returnToPortalHome();
+            showToast('Logged Out', 'You have been signed out.');
+        }
+
+        function formatNaira(amountKobo) {
+            return new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN' }).format(amountKobo / 100);
+        }
+
+        function getFinanceSession() {
+            return document.getElementById('admin-finance-session').value.trim();
+        }
+
+        async function loadFinanceDashboard() {
+            if (appState.teacherRole !== 'admin' || isLocalFile) return;
+            const session = getFinanceSession();
+            if (!session) {
+                showToast('Session Required', 'Enter a session/term to view fees and payments.');
+                return;
+            }
+            try {
+                const query = `?session=${encodeURIComponent(session)}`;
+                const [overview, students, payments, results] = await Promise.all([
+                    requestSchoolApi(`/api/admin/finance/overview${query}`),
+                    requestSchoolApi(`/api/admin/students${query}`),
+                    requestSchoolApi(`/api/admin/payments${query}`),
+                    requestSchoolApi('/api/results')
+                ]);
+                appState.students = results;
+                const totalRoster = Number.isFinite(overview.totalStudents) ? overview.totalStudents : students.length;
+                document.getElementById('school-total-students').textContent = totalRoster;
+                document.getElementById('finance-total-students').textContent = totalRoster;
+                document.getElementById('finance-configured-count').textContent =
+                    `${overview.studentsWithConfiguredFees} / ${totalRoster}`;
+                document.getElementById('finance-total-due').textContent = formatNaira(overview.totalDueKobo);
+                document.getElementById('finance-total-paid').textContent = formatNaira(overview.totalPaidKobo);
+                document.getElementById('finance-total-balance').textContent = formatNaira(overview.totalOutstandingKobo);
+                document.getElementById('finance-pending').textContent =
+                    `${overview.pendingPayments} • ${formatNaira(overview.pendingAmountKobo)}`;
+                renderAdminFinanceStudents(students);
+                renderAdminPayments(payments);
+                renderAdminResultReleases(students, session);
+            } catch (error) {
+                console.error('Could not load the school finance dashboard:', error);
+                showToast('Finance Dashboard Unavailable', error.message);
+            }
+        }
+
+        function renderAdminFinanceStudents(students) {
+            const tbody = document.getElementById('admin-finance-students');
+            if (!students.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">No students are enrolled. Import the school roster CSV.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = students.map(student => `
+                <tr>
+                    <td class="p-3"><span class="font-bold">${escapeHTML(student.name)}</span><span class="block font-mono text-[10px] text-slate-500">${escapeHTML(student.studentId)}</span></td>
+                    <td class="p-3">${escapeHTML(student.className)}</td>
+                    <td class="p-3">${student.feeConfigured ? formatNaira(student.dueKobo) : '<span class="text-red-600">Not set</span>'}</td>
+                    <td class="p-3 text-green-700">${formatNaira(student.paidKobo)}</td>
+                    <td class="p-3 font-bold">${student.feeConfigured ? formatNaira(student.balanceKobo) : '—'}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <button type="button" data-student-id="${escapeHTML(student.studentId)}" data-fee-kobo="${student.dueKobo ?? ''}" onclick="editStudentFee(this)" class="mr-2 font-bold text-orange-700 hover:underline">Fee</button>
+                        <button type="button" data-student-id="${escapeHTML(student.studentId)}" onclick="recordManualPayment(this)" class="font-bold text-slate-800 hover:underline">Record Payment</button>
+                    </td>
+                </tr>`).join('');
+        }
+
+        function renderAdminPayments(payments) {
+            const tbody = document.getElementById('admin-payment-rows');
+            if (!payments.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No payments submitted or recorded for this session.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = payments.map(payment => `
+                <tr class="border-b border-slate-100">
+                    <td class="p-2"><span class="font-bold">${escapeHTML(payment.name)}</span><span class="block text-[10px] text-slate-500">${escapeHTML(payment.studentId)}</span></td>
+                    <td class="p-2">${formatNaira(payment.amountKobo)}</td>
+                    <td class="p-2 break-all">${escapeHTML(payment.reference)}</td>
+                    <td class="p-2"><span class="font-bold ${payment.status === 'approved' ? 'text-green-700' : payment.status === 'pending' ? 'text-amber-700' : 'text-red-700'}">${escapeHTML(payment.status)}</span><span class="block text-[10px] text-slate-500">${payment.source === 'student' ? 'Student claim' : 'Admin entry'}</span></td>
+                    <td class="p-2 whitespace-nowrap">${payment.status === 'pending' ? `
+                        <button type="button" onclick="reviewStudentPayment(${Number(payment.id)}, 'approved')" class="mr-2 font-bold text-green-700 hover:underline">Approve</button>
+                        <button type="button" onclick="reviewStudentPayment(${Number(payment.id)}, 'rejected')" class="font-bold text-red-600 hover:underline">Reject</button>` : '—'}</td>
+                </tr>`).join('');
+        }
+
+        function renderAdminResultReleases(students, session) {
+            const tbody = document.getElementById('admin-result-release-rows');
+            const sessionKey = session.toLowerCase();
+            const roster = new Map(students.map(student => [student.studentId.toLowerCase(), student]));
+            const results = appState.students.filter(result => result.session.trim().toLowerCase() === sessionKey);
+            if (!results.length) {
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No saved results for this session.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = results.map(result => {
+                const student = roster.get(result.id.trim().toLowerCase());
+                const canRelease = student && student.feeConfigured && student.balanceKobo === 0;
+                const releaseStatus = result.publishedAt && canRelease
+                    ? '<span class="font-bold text-green-700">Released</span>'
+                    : result.publishedAt
+                        ? '<span class="font-bold text-amber-700">Held: balance due</span>'
+                    : `<button type="button" data-student-id="${escapeHTML(result.id)}" data-session="${escapeHTML(result.session)}" onclick="releaseStudentResult(this)" ${canRelease ? '' : 'disabled'} class="rounded-lg bg-orange-600 px-2 py-1.5 text-[10px] font-bold text-white disabled:cursor-not-allowed disabled:opacity-40">Release</button>`;
+                return `<tr class="border-b border-slate-100">
+                    <td class="p-2"><span class="font-bold">${escapeHTML(result.name)}</span><span class="block text-[10px] text-slate-500">${escapeHTML(result.id)}</span></td>
+                    <td class="p-2">${escapeHTML(result.session)}</td>
+                    <td class="p-2">${student?.feeConfigured ? formatNaira(student.balanceKobo) : 'Fee not set'}</td>
+                    <td class="p-2">${releaseStatus}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function parseStudentCsv(text) {
+            const rows = [];
+            let row = [];
+            let field = '';
+            let quoted = false;
+            for (let index = 0; index < text.length; index += 1) {
+                const character = text[index];
+                if (quoted) {
+                    if (character === '"' && text[index + 1] === '"') {
+                        field += '"';
+                        index += 1;
+                    } else if (character === '"') {
+                        quoted = false;
+                    } else {
+                        field += character;
+                    }
+                } else if (character === '"' && field.length === 0) {
+                    quoted = true;
+                } else if (character === ',') {
+                    row.push(field.trim());
+                    field = '';
+                } else if (character === '\n' || character === '\r') {
+                    if (character === '\r' && text[index + 1] === '\n') index += 1;
+                    row.push(field.trim());
+                    if (row.some(value => value)) rows.push(row);
+                    row = [];
+                    field = '';
+                } else {
+                    field += character;
+                }
+            }
+            if (quoted) throw new Error('The CSV has an unclosed quoted field.');
+            row.push(field.trim());
+            if (row.some(value => value)) rows.push(row);
+            if (rows.length < 2) throw new Error('The CSV must include column headings and at least one student.');
+
+            const headers = rows.shift().map((header, index) =>
+                (index === 0 ? header.replace(/^\uFEFF/, '') : header).trim().toLowerCase()
+            );
+            for (const required of ['studentid', 'name', 'class', 'guardianemail']) {
+                if (!headers.includes(required)) throw new Error(`CSV is missing the required "${required}" column.`);
+            }
+            const parsedRows = rows.map(values =>
+                Object.fromEntries(headers.map((header, index) => [header, values[index] || '']))
+            );
+            return parsedRows.filter(student => student.studentid).map(student => ({
+                    studentId: student.studentid,
+                    name: student.name,
+                    class: student.class,
+                    guardianEmail: student.guardianemail,
+                    guardianPhone: student.guardianphone || '',
+                    password: student.studentpassword || ''
+                }));
+        }
+
+        async function importStudentRoster() {
+            const input = document.getElementById('student-csv-file');
+            const file = input.files[0];
+            if (!file) {
+                showToast('CSV Required', 'Choose the enrolled students CSV file first.');
+                return;
+            }
+            try {
+                const students = parseStudentCsv(await file.text());
+                const result = await requestSchoolApi('/api/admin/students/import', {
+                    method: 'POST',
+                    body: JSON.stringify({ students })
+                });
+                input.value = '';
+                await loadFinanceDashboard();
+                showToast('Student Roster Imported', `${result.imported} student record(s) imported or updated.`);
+            } catch (error) {
+                showToast('Roster Import Failed', error.message);
+            }
+        }
+
+        function downloadStudentCsvTemplate() {
+            const csv = 'studentId,name,class,guardianEmail,guardianPhone,studentPassword\r\nMIS/2026/101,Emmanuel Johnson,JSS 1,parent@example.com,08000000000,\r\n';
+            const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'miracle-school-student-roster-template.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function createStudentAccount(event) {
+            event.preventDefault();
+            const student = {
+                studentId: document.getElementById('admin-student-id').value.trim(),
+                name: document.getElementById('admin-student-name').value.trim(),
+                className: document.getElementById('admin-student-class').value.trim(),
+                guardianEmail: document.getElementById('admin-student-guardian-email').value.trim(),
+                guardianPhone: document.getElementById('admin-student-guardian-phone').value.trim(),
+                password: document.getElementById('admin-student-password').value
+            };
+            try {
+                const created = await requestSchoolApi('/api/admin/students', {
+                    method: 'POST',
+                    body: JSON.stringify(student)
+                });
+                event.target.reset();
+                await loadFinanceDashboard();
+                showToast('Student Portal Account Created', `${created.studentId} can sign into the Student Portal with the password you created.`);
+            } catch (error) {
+                showToast('Unable to Create Student Account', error.message);
+            }
+        }
+
+        async function saveClassFee(event) {
+            event.preventDefault();
+            const amount = Number(document.getElementById('fee-class-amount').value);
+            if (!Number.isFinite(amount) || amount < 0) {
+                showToast('Invalid Fee', 'Enter a fee amount of zero or more.');
+                return;
+            }
+            try {
+                await requestSchoolApi('/api/admin/fees', {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        className: document.getElementById('fee-class-name').value.trim(),
+                        session: getFinanceSession(),
+                        amountKobo: Math.round(amount * 100)
+                    })
+                });
+                await loadFinanceDashboard();
+                showToast('Class Fee Saved', 'Default fee saved for this class and session.');
+            } catch (error) {
+                showToast('Unable to Save Fee', error.message);
+            }
+        }
+
+        async function editStudentFee(button) {
+            const studentId = button.dataset.studentId;
+            const oldKobo = button.dataset.feeKobo;
+            const input = prompt('Enter this student’s fee in NGN. Leave blank to use the class fee.', oldKobo === '' ? '' : (Number(oldKobo) / 100).toFixed(2));
+            if (input === null) return;
+            let amountKobo = null;
+            if (input.trim() !== '') {
+                const amount = Number(input);
+                if (!Number.isFinite(amount) || amount < 0) {
+                    showToast('Invalid Fee', 'Enter a non-negative fee amount or leave it blank.');
+                    return;
+                }
+                amountKobo = Math.round(amount * 100);
+            }
+            try {
+                await requestSchoolApi(`/api/admin/students/${encodeURIComponent(studentId)}/fee`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ session: getFinanceSession(), amountKobo })
+                });
+                await loadFinanceDashboard();
+                showToast('Student Fee Updated', 'Student-specific fee setting saved.');
+            } catch (error) {
+                showToast('Unable to Update Fee', error.message);
+            }
+        }
+
+        async function recordManualPayment(button) {
+            const studentId = button.dataset.studentId;
+            const amount = Number(prompt('Enter the confirmed payment amount in NGN.'));
+            if (!Number.isFinite(amount) || amount <= 0) return;
+            const reference = prompt('Enter the bank, transfer, or receipt reference.');
+            if (!reference || !reference.trim()) return;
+            try {
+                await requestSchoolApi('/api/admin/payments', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        studentId,
+                        session: getFinanceSession(),
+                        amountKobo: Math.round(amount * 100),
+                        reference: reference.trim()
+                    })
+                });
+                await loadFinanceDashboard();
+                showToast('Payment Recorded', 'Confirmed payment added to the student’s account.');
+            } catch (error) {
+                showToast('Unable to Record Payment', error.message);
+            }
+        }
+
+        async function reviewStudentPayment(id, status) {
+            const message = status === 'approved'
+                ? 'Approve this payment? Confirm it has reached the school before approving.'
+                : 'Reject this payment claim?';
+            if (!confirm(message)) return;
+            try {
+                await requestSchoolApi(`/api/admin/payments/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ status })
+                });
+                await loadFinanceDashboard();
+                showToast('Payment Updated', status === 'approved' ? 'Approved payment is now included in the student balance.' : 'Payment claim rejected.');
+            } catch (error) {
+                showToast('Unable to Update Payment', error.message);
+            }
+        }
+
+        async function releaseStudentResult(button) {
+            const studentId = button.dataset.studentId;
+            const session = button.dataset.session;
+            if (!confirm(`Release the ${session} result for ${studentId} to the student portal?`)) return;
+            try {
+                const response = await requestSchoolApi('/api/admin/results/publish', {
+                    method: 'POST',
+                    body: JSON.stringify({ studentId, session })
+                });
+                const result = appState.students.find(student =>
+                    student.id.trim().toLowerCase() === studentId.trim().toLowerCase() &&
+                    student.session.trim().toLowerCase() === session.trim().toLowerCase()
+                );
+                if (result) result.publishedAt = response.publishedAt;
+                await loadFinanceDashboard();
+                showToast('Result Released', 'The student can now view this result in their portal.');
+            } catch (error) {
+                showToast('Unable to Release Result', error.message);
+            }
+        }
+
+        async function loadTeacherAccounts() {
+            const tbody = document.getElementById('admin-teachers-tbody');
+            if (appState.teacherRole !== 'admin' || isLocalFile) return;
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>';
+            try {
+                const teachers = await requestSchoolApi('/api/admin/teachers');
+                if (!teachers.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">No teacher accounts have been created.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = teachers.map(teacher => `
+                    <tr>
+                        <td class="p-3">${escapeHTML(teacher.username || teacher.email)}</td>
+                        <td class="p-3">${escapeHTML(teacher.email)}</td>
+                        <td class="p-3">${escapeHTML(new Date(teacher.createdAt).toLocaleDateString())}</td>
+                        <td class="p-3 text-center">${Number(teacher.activeSessions) || 0}</td>
+                        <td class="p-3 text-center">
+                            <span class="inline-block px-2 py-1 rounded-full text-[10px] font-bold ${teacher.isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}">
+                                ${teacher.isActive ? 'Active' : 'Disabled'}
+                            </span>
+                        </td>
+                        <td class="p-3 text-right whitespace-nowrap">
+                            <button type="button" onclick="setTeacherAccountStatus(${Number(teacher.id)}, ${!teacher.isActive})" class="text-orange-700 hover:text-orange-900 font-bold mr-3">
+                                ${teacher.isActive ? 'Disable' : 'Enable'}
+                            </button>
+                            <button type="button" onclick="removeTeacherAccount(${Number(teacher.id)})" class="text-red-600 hover:text-red-800 font-bold">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>`).join('');
+            } catch (error) {
+                console.error('Could not load teacher accounts:', error);
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-600">${escapeHTML(error.message)}</td></tr>`;
+            }
+        }
+
+        async function updateAdminPassword(event) {
+            event.preventDefault();
+            const currentPassword = document.getElementById('admin-current-password').value;
+            const newPassword = document.getElementById('admin-new-password').value;
+            const confirmPassword = document.getElementById('admin-confirm-password').value;
+            if (newPassword !== confirmPassword) {
+                showToast('Password Mismatch', 'The new password and confirmation do not match.');
+                return;
+            }
+            try {
+                await requestSchoolApi('/api/admin/password', {
+                    method: 'PATCH',
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+                event.target.reset();
+                showToast('Password Updated', 'The admin password was changed successfully. Sign in again with your new password.');
+            } catch (error) {
+                showToast('Unable to Update Password', error.message);
+            }
+        }
+
+        async function createTeacherAccount(event) {
+            event.preventDefault();
+            const username = document.getElementById('admin-teacher-username').value.trim();
+            const email = document.getElementById('admin-teacher-email').value.trim();
+            const password = document.getElementById('admin-teacher-password').value;
+            try {
+                await requestSchoolApi('/api/admin/teachers', {
+                    method: 'POST',
+                    body: JSON.stringify({ username, email, password })
+                });
+                event.target.reset();
+                await loadTeacherAccounts();
+                showToast('Teacher Account Created', `${username} can now sign in with their username or email.`);
+            } catch (error) {
+                showToast('Unable to Create Account', error.message);
+            }
+        }
+
+        async function setTeacherAccountStatus(id, isActive) {
+            try {
+                await requestSchoolApi(`/api/admin/teachers/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ isActive })
+                });
+                await loadTeacherAccounts();
+                showToast('Teacher Account Updated', isActive ? 'Teacher access is enabled.' : 'Teacher access is disabled and sessions were ended.');
+            } catch (error) {
+                showToast('Unable to Update Account', error.message);
+            }
+        }
+
+        async function removeTeacherAccount(id) {
+            if (!confirm('Remove this teacher account? This action cannot be undone.')) return;
+            try {
+                await requestSchoolApi(`/api/admin/teachers/${id}`, { method: 'DELETE' });
+                await loadTeacherAccounts();
+                showToast('Teacher Account Removed', 'The account and its active sessions were removed.');
+            } catch (error) {
+                showToast('Unable to Remove Account', error.message);
+            }
+        }
+
+        function showForgotPassword() {
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('reset-card').classList.remove('hidden');
+            const identifier = document.getElementById('login-username').value.trim();
+            document.getElementById('reset-email').value = identifier.includes('@') ? identifier : '';
+            document.getElementById('reset-code-form').classList.add('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('reset-card').classList.add('hidden');
+            document.getElementById('login-card').classList.remove('hidden');
+        }
+
+        async function handlePasswordReset(e) {
+            e.preventDefault();
+            if (window.location.protocol === 'file:') {
+                showToast('Server Required', 'Open the portal through its server to email a reset code.');
+                return;
+            }
+
+            const email = document.getElementById('reset-email').value.trim();
+
+            try {
+                const response = await fetch('/api/auth/request-reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                if (!response.ok) {
+                    showToast('Unable to Send Code', 'Check the email server configuration and try again.');
+                    return;
+                }
+
+                document.getElementById('reset-code-form').classList.remove('hidden');
+                showToast('Check Your Email', 'If the address is registered, a reset code has been sent.');
+            } catch (error) {
+                showToast('Unable to Send Code', 'Cannot reach the reset service. Open this site through the local server.');
+            }
+        }
+
+        async function handlePasswordChange(e) {
+            e.preventDefault();
+            const email = document.getElementById('reset-email').value.trim();
+            const code = document.getElementById('reset-code').value.trim();
+            const password = document.getElementById('new-password').value;
+
+            try {
+                const response = await fetch('/api/auth/reset-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code, password })
+                });
+
+                if (!response.ok) {
+                    showToast('Reset Failed', response.status === 400 ? 'The code is invalid or expired, or the password is too short.' : 'The reset service is unavailable.');
+                    return;
+                }
+
+                document.getElementById('login-username').value = email;
+                document.getElementById('login-password').value = '';
+                document.getElementById('reset-code').value = '';
+                document.getElementById('new-password').value = '';
+                showLogin();
+                showToast('Password Reset', 'Your password was changed. Sign in with your new password.');
+            } catch (error) {
+                showToast('Reset Failed', 'Cannot reach the reset service. Open this site through the local server.');
+            }
+        }
+
+        // ==========================================
+        // TAB SWITCHING
+        // ==========================================
+        function switchTab(tab) {
+            if (appState.teacherRole === 'admin' && tab !== 'admin') {
+                showToast('Teacher Portal Only', 'Academic result entry, search, and subject tools are available in the Teacher Portal.');
+                return;
+            }
+            if (appState.teacherRole === 'teacher' && tab === 'admin') {
+                showToast('Admin Portal Only', 'School management controls are available in the Admin Portal.');
+                return;
+            }
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-orange-600', 'text-white');
+                b.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            document.getElementById(`tab-btn-${tab}`).classList.remove('bg-slate-100', 'text-slate-700');
+            document.getElementById(`tab-btn-${tab}`).classList.add('bg-orange-600', 'text-white');
+
+            document.getElementById('tab-content-entry').classList.add('hidden');
+            document.getElementById('tab-content-database').classList.add('hidden');
+            document.getElementById('tab-content-subjects').classList.add('hidden');
+            document.getElementById('tab-content-admin').classList.add('hidden');
+            document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
+        }
+
+        // ==========================================
+        // DYNAMIC SUBJECT & SCORE INPUT ENGINE
+        // ==========================================
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
+        function renderSubjectRows() {
+            const tbody = document.getElementById('score-input-rows');
+            tbody.innerHTML = '';
+            document.getElementById('subject-count-tag').innerText = `Configured Subjects: ${appState.subjects.length}`;
+
+            appState.subjects.forEach((sub, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-800">${escapeHTML(sub)}</td>
+                    <td class="p-3 text-center" data-label="Test Score (/30)">
+                        <input type="number" min="0" max="30" step="any" placeholder="0–30" oninput="computeScores()" class="sub-test-input w-24 p-2 text-center rounded-lg border border-slate-200 font-bold focus:ring-2 focus:ring-orange-500 outline-none" data-index="${idx}">
+                    </td>
+                    <td class="p-3 text-center" data-label="Exam Score (/70)">
+                        <input type="number" min="0" max="70" step="any" placeholder="0–70" oninput="computeScores()" class="sub-exam-input w-24 p-2 text-center rounded-lg border border-slate-200 font-bold focus:ring-2 focus:ring-orange-500 outline-none" data-index="${idx}">
+                    </td>
+                    <td class="p-3 text-center font-black text-slate-900 sub-total-cell" data-index="${idx}" data-label="Total / Test Status">—</td>
+                    <td class="p-3 text-center font-bold sub-percentage-cell" data-index="${idx}" data-label="Percentage">—</td>
+                    <td class="p-3 text-center font-bold sub-letter-grade" data-index="${idx}" data-label="Grade">—</td>
+                    <td class="p-3 text-center" data-label="Remark"><span class="sub-grade-badge px-2 py-0.5 bg-slate-100 text-slate-700 font-bold rounded text-[10px]" data-index="${idx}">Enter test mark</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            computeScores();
+        }
+
+        function computeScores() {
+            let grandTotal = 0;
+            let testTotal = 0;
+            let completedTests = 0;
+            let completedExams = 0;
+            const maxAttainable = appState.subjects.length * 100;
+
+            appState.subjects.forEach((sub, idx) => {
+                const testInput = document.querySelector(`.sub-test-input[data-index="${idx}"]`);
+                const examInput = document.querySelector(`.sub-exam-input[data-index="${idx}"]`);
+                const totalCell = document.querySelector(`.sub-total-cell[data-index="${idx}"]`);
+                const percentageCell = document.querySelector(`.sub-percentage-cell[data-index="${idx}"]`);
+                const letterGradeCell = document.querySelector(`.sub-letter-grade[data-index="${idx}"]`);
+                const gradeBadge = document.querySelector(`.sub-grade-badge[data-index="${idx}"]`);
+
+                const testValue = testInput.value.trim();
+                const examValue = examInput.value.trim();
+                const test = Number(testValue);
+                const exam = Number(examValue);
+                const validTest = testValue !== '' && Number.isFinite(test) && test >= 0 && test <= 30;
+                const validExam = examValue !== '' && Number.isFinite(exam) && exam >= 0 && exam <= 70;
+
+                if (!validTest) {
+                    percentageCell.innerText = '—';
+                    letterGradeCell.innerText = '—';
+                    gradeBadge.innerText = 'Enter test mark';
+                    gradeBadge.className = 'sub-grade-badge px-2 py-0.5 font-bold rounded text-[10px] bg-slate-100 text-slate-700';
+                    totalCell.innerText = '—';
+                    return;
+                }
+
+                testTotal += test;
+                completedTests += 1;
+
+                if (examValue !== '' && !validExam) {
+                    percentageCell.innerText = '—';
+                    totalCell.innerText = '—';
+                    letterGradeCell.innerText = '—';
+                    gradeBadge.innerText = 'Invalid exam mark';
+                    gradeBadge.className = 'sub-grade-badge px-2 py-0.5 font-bold rounded text-[10px] bg-rose-100 text-rose-800';
+                    return;
+                }
+
+                if (validExam) {
+                    const subTotal = test + exam;
+                    const combinedPercentage = subTotal;
+                    totalCell.innerText = subTotal.toFixed(1).replace(/\.0$/, '');
+                    percentageCell.innerText = `${combinedPercentage.toFixed(1)}%`;
+                    letterGradeCell.innerText = calculateGrade(combinedPercentage);
+                    const combinedRemark = calculateRemark(combinedPercentage);
+                    gradeBadge.innerText = combinedRemark;
+                    gradeBadge.className = `sub-grade-badge px-2 py-0.5 font-bold rounded text-[10px] ${getRemarkBadgeColor(combinedRemark)}`;
+                    grandTotal += subTotal;
+                    completedExams += 1;
+                    return;
+                }
+
+                const testPercentage = Number(calculateTestPercentage(test));
+                percentageCell.innerText = `${testPercentage.toFixed(1)}%`;
+                letterGradeCell.innerText = calculateGrade(testPercentage);
+                const testRemark = calculateRemark(testPercentage);
+                gradeBadge.innerText = testRemark;
+                gradeBadge.className = `sub-grade-badge px-2 py-0.5 font-bold rounded text-[10px] ${getRemarkBadgeColor(testRemark)}`;
+                totalCell.innerText = `Test: ${test}/30`;
+            });
+
+            if (completedTests !== appState.subjects.length) {
+                document.getElementById('summary-total').innerText = '—';
+                document.getElementById('summary-max').innerText = '—';
+                document.getElementById('summary-percentage').innerText = '—';
+                document.getElementById('summary-grade').innerText = 'Enter all test marks';
+                return;
+            }
+
+            const examsComplete = completedExams === appState.subjects.length;
+            const summaryTotal = examsComplete ? grandTotal : testTotal;
+            const summaryMax = examsComplete ? maxAttainable : appState.subjects.length * 30;
+            const percentage = (summaryTotal / summaryMax) * 100;
+            document.getElementById('summary-total-label').innerText = examsComplete ? 'Total Marks Obtained:' : 'Test Marks Obtained:';
+            document.getElementById('summary-max-label').innerText = examsComplete ? 'Maximum Total Marks:' : 'Maximum Test Marks:';
+            document.getElementById('summary-percentage-label').innerText = examsComplete ? 'Final Percentage:' : 'Test Percentage:';
+            document.getElementById('summary-total').innerText = summaryTotal.toFixed(1).replace(/\.0$/, '');
+            document.getElementById('summary-max').innerText = summaryMax;
+            document.getElementById('summary-percentage').innerText = `${percentage.toFixed(1)}%`;
+            document.getElementById('summary-grade').innerText =
+                `${calculateGrade(percentage)} - ${calculateRemark(percentage)}`;
+        }
+
+        function calculateTestPercentage(testScore) {
+            return ((testScore / 30) * 100).toFixed(1);
+        }
+
+        function calculateGrade(score) {
+            if (score >= 70) return 'A';
+            if (score >= 60) return 'B';
+            if (score >= 50) return 'C';
+            if (score >= 40) return 'E';
+            if (score >= 30) return 'D';
+            return 'F';
+        }
+
+        function calculateRemark(score) {
+            if (score >= 70) return 'Excellent';
+            if (score >= 60) return 'V.Good';
+            if (score >= 50) return 'Good';
+            if (score >= 40) return 'Pass';
+            if (score >= 30) return 'Fair';
+            return 'Fail';
+        }
+
+        function getGradeBadgeColor(grade) {
+            switch (grade) {
+                case 'A': return 'bg-emerald-100 text-emerald-800';
+                case 'B': return 'bg-blue-100 text-blue-800';
+                case 'C': return 'bg-amber-100 text-amber-800';
+                case 'D': return 'bg-yellow-100 text-yellow-800';
+                case 'E': return 'bg-orange-100 text-orange-800';
+                default: return 'bg-rose-100 text-rose-800';
+            }
+        }
+
+        function getRemarkBadgeColor(remark) {
+            switch (remark) {
+                case 'Excellent': return 'bg-emerald-100 text-emerald-800';
+                case 'V.Good': return 'bg-blue-100 text-blue-800';
+                case 'Good': return 'bg-amber-100 text-amber-800';
+                case 'Pass': return 'bg-orange-100 text-orange-800';
+                case 'Fair': return 'bg-yellow-100 text-yellow-800';
+                default: return 'bg-rose-100 text-rose-800';
+            }
+        }
+
+        // ==========================================
+        // SAVE RESULT & WHATSAPP BROADCAST
+        // ==========================================
+        function loadSavedResultForEditing(showNotification = true) {
+            const id = document.getElementById('std-id').value.trim();
+            const session = document.getElementById('std-session').value.trim();
+            const status = document.getElementById('saved-result-status');
+            if (!id || !session) {
+                if (showNotification) showToast('Student Details Needed', 'Enter the student ID and session/term first.');
+                status.textContent = 'Enter the student ID and session to load their saved result.';
+                return false;
+            }
+
+            const record = appState.students.find(student => student.recordKey === getResultKey(id, session));
+            if (!record) {
+                status.textContent = 'No saved result matches this student ID and session/term. Enter the test marks to create a new record.';
+                if (showNotification) showToast('No Saved Result', 'No saved result was found for this student ID and session/term.');
+                return false;
+            }
+
+            document.getElementById('std-name').value = record.name;
+            document.getElementById('std-sex').value = record.sex;
+            document.getElementById('std-class').value = record.class;
+            document.getElementById('std-phone').value = record.phone;
+            document.getElementById('std-class-size').value = record.classSize || '';
+            document.getElementById('std-teacher-comment').value = record.teacherComment || '';
+            document.getElementById('std-principal-comment').value = record.principalComment || '';
+
+            appState.subjects.forEach((subject, index) => {
+                const savedScore = record.scores[subject];
+                const testInput = document.querySelector(`.sub-test-input[data-index="${index}"]`);
+                const examInput = document.querySelector(`.sub-exam-input[data-index="${index}"]`);
+                testInput.value = savedScore ? savedScore.test : '';
+                examInput.value = savedScore && Number.isFinite(savedScore.exam) ? savedScore.exam : '';
+            });
+
+            computeScores();
+            status.textContent = `Loaded saved scores for ${record.name} (${record.id}) — ${record.session}.`;
+            if (showNotification) {
+                showToast('Saved Result Loaded', record.examComplete
+                    ? 'The completed result is loaded for editing.'
+                    : 'The saved test marks are loaded. Enter exam marks when ready.');
+            }
+            return true;
+        }
+
+        async function saveStudentResult(e) {
+            e.preventDefault();
+            if (!databaseReady) {
+                showToast('Storage Unavailable', 'The results database is not ready; no result was saved.');
+                return;
+            }
+
+            const name = document.getElementById('std-name').value.trim();
+            const id = document.getElementById('std-id').value.trim();
+            const sex = document.getElementById('std-sex').value;
+            const cls = document.getElementById('std-class').value;
+            const phone = document.getElementById('std-phone').value.trim().replace(/\D/g, '');
+            const classSizeInput = document.getElementById('std-class-size');
+            const classSize = Number(classSizeInput.value);
+            const session = document.getElementById('std-session').value.trim();
+            const teacherComment = document.getElementById('std-teacher-comment').value.trim();
+            const principalComment = document.getElementById('std-principal-comment').value.trim();
+
+            if (!Number.isSafeInteger(classSize) || classSize < 1) {
+                showToast('Invalid Class Size', 'Enter a whole number of students greater than zero.');
+                classSizeInput.focus();
+                return;
+            }
+
+            if (!/^\d{8,15}$/.test(phone)) {
+                showToast('Invalid WhatsApp Number', 'Enter the parent number with its country code, using 8 to 15 digits.');
+                document.getElementById('std-phone').focus();
+                return;
+            }
+
+            let scoresMap = {};
+            let grandTotal = 0;
+            let testTotal = 0;
+            let examsComplete = true;
+            let examsEntered = 0;
+
+            appState.subjects.forEach(sub => {
+                const idx = appState.subjects.indexOf(sub);
+                const testInput = document.querySelector(`.sub-test-input[data-index="${idx}"]`);
+                const examInput = document.querySelector(`.sub-exam-input[data-index="${idx}"]`);
+                const test = Number(testInput.value);
+                const examValue = examInput.value.trim();
+                const exam = examValue === '' ? null : Number(examValue);
+
+                if (!Number.isFinite(test) || testInput.value.trim() === '' || test < 0 || test > 30) {
+                    showToast('Invalid Test Score', `Enter a test mark from 0 to 30 for ${sub}.`);
+                    testInput.focus();
+                    return;
+                }
+                if (exam !== null && (!Number.isFinite(exam) || exam < 0 || exam > 70)) {
+                    showToast('Invalid Exam Score', `Enter an exam mark from 0 to 70 for ${sub}.`);
+                    examInput.focus();
+                    return;
+                }
+
+                scoresMap[sub] = { test, exam };
+                testTotal += test;
+                if (exam === null) {
+                    examsComplete = false;
+                } else {
+                    examsEntered += 1;
+                    grandTotal += test + exam;
+                }
+            });
+
+            if (Object.keys(scoresMap).length !== appState.subjects.length) return;
+            if (examsEntered > 0 && !examsComplete) {
+                showToast('Exam Marks Incomplete', 'To save the test stage, leave every exam blank. To save the final result, enter an exam mark for every subject.');
+                return;
+            }
+
+            if (!examsComplete) grandTotal = testTotal;
+            const maxMarks = appState.subjects.length * (examsComplete ? 100 : 30);
+            const percentage = parseFloat(((grandTotal / maxMarks) * 100).toFixed(1));
+
+            const studentRecord = {
+                recordKey: getResultKey(id, session),
+                id: id,
+                name: name,
+                sex: sex,
+                class: cls,
+                classSize: classSize,
+                phone: phone,
+                session: session,
+                teacherComment,
+                principalComment,
+                scores: scoresMap,
+                examComplete: examsComplete,
+                totalMarks: grandTotal,
+                maxMarks: maxMarks,
+                percentage: percentage,
+                grade: calculateGrade(percentage),
+                remark: calculateRemark(percentage)
+            };
+
+            try {
+                if (!isLocalFile) {
+                    await requestSchoolApi('/api/results', {
+                        method: 'PUT',
+                        body: JSON.stringify({ result: studentRecord })
+                    });
+                }
+                if (resultDatabase) {
+                    try {
+                        await runDatabaseRequest('results', 'readwrite', store => store.put(studentRecord));
+                    } catch (error) {
+                        if (isLocalFile) throw error;
+                        console.error('Result saved centrally, but the local browser cache could not be updated:', error);
+                    }
+                }
+                const existingIdx = appState.students.findIndex(student => student.recordKey === studentRecord.recordKey);
+                if (existingIdx >= 0) {
+                    appState.students[existingIdx] = studentRecord;
+                } else {
+                    appState.students.push(studentRecord);
+                }
+            } catch (error) {
+                console.error('Could not save student result:', error);
+                if (!isLocalFile && error.message.includes('Sign in again')) {
+                    appState.teacherLoggedIn = false;
+                    document.getElementById('dashboard-section').classList.add('hidden');
+                    document.getElementById('nav-user-status').classList.add('hidden');
+                    document.getElementById('auth-section').classList.remove('hidden');
+                    showToast('Session Expired', 'Sign in again before saving to the shared school database.');
+                } else if (error && error.name === 'QuotaExceededError' && isLocalFile) {
+                    showToast('Browser Storage Full', 'The browser has run out of space for this site. Download a results backup, then free space in this browser or use a browser profile with available storage.');
+                } else {
+                    showToast('Save Failed', isLocalFile
+                        ? 'The result could not be saved to this browser.'
+                        : `The result could not be saved to the shared database: ${error.message}`);
+                }
+                return;
+            }
+
+            renderStudentDatabase();
+            showToast('Result Saved', `Academic records for ${name} saved successfully${isLocalFile ? ' in this browser' : ' to the shared school database'}.`);
+            switchTab('entry');
+        }
+
+        // ==========================================
+        // STUDENT DATABASE & SEARCH BY ID
+        // ==========================================
+        function renderStudentDatabase() {
+            const tbody = document.getElementById('student-database-tbody');
+            tbody.innerHTML = '';
+
+            renderStudentRows(appState.students, tbody);
+        }
+
+        function renderStudentRows(records, tbody) {
+            records.forEach(student => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-amber-50/30 transition';
+
+                const addCell = (text, className) => {
+                    const cell = document.createElement('td');
+                    cell.className = className;
+                    cell.textContent = text;
+                    row.appendChild(cell);
+                };
+
+                addCell(student.id, 'p-3.5 font-mono font-bold text-orange-600');
+                addCell(student.name, 'p-3.5 font-bold text-slate-800');
+                addCell(student.sex, 'p-3.5 text-slate-600');
+                addCell(student.class, 'p-3.5 font-semibold text-slate-700');
+                addCell(student.session, 'p-3.5 text-slate-600');
+                addCell(student.examComplete ? 'Final result' : 'Test saved; exam pending', 'p-3.5 text-slate-600');
+                addCell(`${student.percentage}%`, 'p-3.5 text-center font-black text-slate-900');
+
+                const gradeCell = document.createElement('td');
+                gradeCell.className = 'p-3.5 text-center';
+                const gradeBadge = document.createElement('span');
+                gradeBadge.className = `px-2.5 py-1 ${getGradeBadgeColor(student.grade)} font-bold rounded-lg`;
+                gradeBadge.textContent = student.grade;
+                gradeCell.appendChild(gradeBadge);
+                row.appendChild(gradeCell);
+
+                const remarkCell = document.createElement('td');
+                remarkCell.className = 'p-3.5 text-center';
+                const remarkBadge = document.createElement('span');
+                remarkBadge.className = `px-2.5 py-1 ${getRemarkBadgeColor(student.remark)} font-bold rounded-lg`;
+                remarkBadge.textContent = student.remark;
+                remarkCell.appendChild(remarkBadge);
+                row.appendChild(remarkCell);
+
+                const actionCell = document.createElement('td');
+                actionCell.className = 'p-3.5 text-right space-x-1 whitespace-nowrap';
+                const viewButton = document.createElement('button');
+                viewButton.type = 'button';
+                viewButton.className = 'bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg';
+                viewButton.textContent = 'View PDF';
+                viewButton.addEventListener('click', () => viewReportModal(student.recordKey));
+
+                const sendButton = document.createElement('button');
+                sendButton.type = 'button';
+                sendButton.className = 'bg-whatsapp-500 hover:bg-whatsapp-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg';
+                sendButton.textContent = 'Prepare WhatsApp';
+                sendButton.addEventListener('click', () => sendWhatsAppResult(student.recordKey));
+
+                const emailButton = document.createElement('button');
+                emailButton.type = 'button';
+                emailButton.className = student.publishedAt
+                    ? 'bg-blue-700 hover:bg-blue-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg'
+                    : 'cursor-not-allowed bg-slate-200 text-slate-500 text-[11px] font-bold px-3 py-1.5 rounded-lg';
+                emailButton.textContent = student.publishedAt ? 'Email Parent' : 'Awaiting Release';
+                emailButton.title = student.publishedAt
+                    ? 'Email this released result to the parent email on the student record.'
+                    : 'The admin must release this result before it can be emailed.';
+                emailButton.disabled = !student.publishedAt;
+                emailButton.addEventListener('click', () => emailResultToParent(student, emailButton));
+
+                actionCell.append(viewButton, emailButton, sendButton);
+                row.appendChild(actionCell);
+                tbody.appendChild(row);
+            });
+        }
+
+        async function emailResultToParent(student, button) {
+            if (!student.publishedAt) return;
+            button.disabled = true;
+            button.textContent = 'Sending...';
+            try {
+                await requestSchoolApi('/api/results/email-parent', {
+                    method: 'POST',
+                    body: JSON.stringify({ studentId: student.id, session: student.session })
+                });
+                showToast('Result Emailed', `The released result was sent to the parent email on file for ${student.name}.`);
+            } catch (error) {
+                console.error('Could not email the released result:', error);
+                showToast('Unable to Email Result', error.message);
+            } finally {
+                button.textContent = 'Email Parent';
+                button.disabled = false;
+            }
+        }
+
+        function filterStudents() {
+            const searchId = document.getElementById('search-id').value.toUpperCase().trim();
+            const filterClass = document.getElementById('filter-class').value;
+            const filterSex = document.getElementById('filter-sex').value;
+
+            const tbody = document.getElementById('student-database-tbody');
+            tbody.innerHTML = '';
+
+            const filtered = appState.students.filter(student => {
+                const matchesId = student.id.toUpperCase().includes(searchId) ||
+                    student.name.toUpperCase().includes(searchId) ||
+                    student.session.toUpperCase().includes(searchId);
+                const matchesClass = filterClass === '' || student.class === filterClass;
+                const matchesSex = filterSex === '' || student.sex === filterSex;
+                return matchesId && matchesClass && matchesSex;
+            });
+
+            renderStudentRows(filtered, tbody);
+        }
+
+        function exportResultsBackup() {
+            const backup = {
+                exportedAt: new Date().toISOString(),
+                subjects: appState.subjects,
+                results: appState.students
+            };
+            const file = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `miracle-school-results-${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showToast('Backup Downloaded', 'Keep this file safe; it contains student result data.');
+        }
+
+        async function importResultsBackup(event) {
+            const input = event.target;
+            const file = input.files[0];
+            input.value = '';
+            if (!file) return;
+            if (isLocalFile && !databaseReady) {
+                showToast('Storage Unavailable', 'The results database is not ready.');
+                return;
+            }
+
+            try {
+                const backup = JSON.parse(await file.text());
+                if (!Array.isArray(backup.results) || !Array.isArray(backup.subjects) ||
+                    backup.subjects.some(subject => typeof subject !== 'string' || !subject.trim())) {
+                    throw new Error('Backup file does not contain valid subjects and results.');
+                }
+
+                const importedResults = backup.results.map(student => {
+                    if (!student || typeof student.id !== 'string' || !student.id.trim() ||
+                        typeof student.name !== 'string' || typeof student.sex !== 'string' ||
+                        typeof student.class !== 'string' || typeof student.phone !== 'string' ||
+                        typeof student.session !== 'string' || !student.session.trim() ||
+                        !student.scores || typeof student.scores !== 'object' || Array.isArray(student.scores)) {
+                        throw new Error('Backup contains an invalid student result.');
+                    }
+
+                    const scores = {};
+                    for (const [subject, score] of Object.entries(student.scores)) {
+                        if (!subject.trim() || !score || !Number.isFinite(score.test) || score.test < 0 || score.test > 30 ||
+                            (score.exam !== null && score.exam !== undefined &&
+                                (!Number.isFinite(score.exam) || score.exam < 0 || score.exam > 70))) {
+                            throw new Error('Backup contains scores outside the test /30 or exam /70 limits.');
+                        }
+                        scores[subject] = { test: score.test, exam: score.exam ?? null };
+                    }
+                    if (!Object.keys(scores).length) throw new Error('Backup contains a result without subject scores.');
+
+                    const examComplete = Object.values(scores).every(score => Number.isFinite(score.exam));
+                    const totalMarks = Object.values(scores).reduce((total, score) =>
+                        total + score.test + (examComplete ? score.exam : 0), 0);
+                    const maxMarks = Object.keys(scores).length * (examComplete ? 100 : 30);
+                    const percentage = Number(((totalMarks / maxMarks) * 100).toFixed(1));
+                    const id = student.id.trim();
+                    const session = student.session.trim();
+                    return {
+                        recordKey: getResultKey(id, session),
+                        id,
+                        name: student.name.trim(),
+                        sex: student.sex,
+                        class: student.class,
+                        classSize: Number.isSafeInteger(student.classSize) && student.classSize > 0 ? student.classSize : null,
+                        phone: student.phone,
+                        session,
+                        teacherComment: typeof student.teacherComment === 'string' ? student.teacherComment.slice(0, 1000) : '',
+                        principalComment: typeof student.principalComment === 'string' ? student.principalComment.slice(0, 1000) : '',
+                        scores,
+                        examComplete,
+                        totalMarks,
+                        maxMarks,
+                        percentage,
+                        grade: calculateGrade(percentage),
+                        remark: calculateRemark(percentage)
+                    };
+                });
+
+                const subjects = [...new Set(backup.subjects.map(subject => subject.trim()))];
+                if (!subjects.length) throw new Error('Backup must include at least one subject.');
+                if (subjects.length > MAX_SUBJECTS) {
+                    throw new Error(`Backup has ${subjects.length} subjects; this portal supports up to ${MAX_SUBJECTS}.`);
+                }
+                if (!confirm(`Merge ${importedResults.length} result(s)? Matching student ID and session/term records will be replaced.`)) return;
+
+                if (!isLocalFile) {
+                    await requestSchoolApi('/api/results/import', {
+                        method: 'POST',
+                        body: JSON.stringify({ results: importedResults, subjects })
+                    });
+                    const [serverResults, serverSubjects] = await Promise.all([
+                        requestSchoolApi('/api/results'),
+                        requestSchoolApi('/api/subjects')
+                    ]);
+                    appState.students = serverResults;
+                    appState.subjects = serverSubjects;
+                    if (resultDatabase) {
+                        try {
+                            await Promise.all([
+                                ...serverResults.map(student =>
+                                    runDatabaseRequest('results', 'readwrite', store => store.put(student))
+                                ),
+                                runDatabaseRequest('settings', 'readwrite', store =>
+                                    store.put({ key: 'subjects', value: serverSubjects })
+                                )
+                            ]);
+                        } catch (error) {
+                            console.error('Backup imported centrally, but the local browser cache could not be updated:', error);
+                        }
+                    }
+                } else {
+                    appState.students = await mergeResultsBackup(importedResults, subjects);
+                    appState.subjects = subjects;
+                }
+                renderSubjectRows();
+                renderSubjectManagerList();
+                renderStudentDatabase();
+                showToast('Backup Restored', `${importedResults.length} result(s) merged successfully.`);
+            } catch (error) {
+                console.error('Could not restore results backup:', error);
+                showToast('Restore Failed', error.message || 'The selected backup could not be restored.');
+            }
+        }
+
+        function mergeResultsBackup(importedResults, subjects) {
+            return new Promise((resolve, reject) => {
+                const transaction = resultDatabase.transaction(['results', 'settings'], 'readwrite');
+                const resultsStore = transaction.objectStore('results');
+                const settingsStore = transaction.objectStore('settings');
+                const request = resultsStore.getAll();
+                let mergedResults;
+
+                request.onsuccess = () => {
+                    const resultsByKey = new Map(request.result.map(student => [student.recordKey, student]));
+                    importedResults.forEach(student => resultsByKey.set(student.recordKey, student));
+                    mergedResults = Array.from(resultsByKey.values());
+                    try {
+                        mergedResults.forEach(student => resultsStore.put(student));
+                        settingsStore.put({ key: 'subjects', value: subjects });
+                    } catch (error) {
+                        transaction.abort();
+                        reject(error);
+                    }
+                };
+                request.onerror = () => reject(request.error);
+                transaction.oncomplete = () => resolve(mergedResults);
+                transaction.onerror = () => reject(transaction.error);
+                transaction.onabort = () => reject(transaction.error || new Error('Backup restore transaction was aborted.'));
+            });
+        }
+
+        // ==========================================
+        // WHATSAPP BROADCAST ENGINE
+        // ==========================================
+        function sendWhatsAppResult(recordKey) {
+            const student = appState.students.find(result => result.recordKey === recordKey);
+            if (!student) return;
+
+            const lines = [
+                'MIRACLE INTERNATIONAL SCHOOL - OFFICIAL RESULT',
+                '',
+                `Student: ${student.name}`,
+                `Student ID: ${student.id}`,
+                `Class: ${student.class}`,
+                `Total students in class: ${student.classSize || 'Not provided'}`,
+                `Session / Term: ${student.session}`,
+                `Teacher's comment: ${student.teacherComment || 'No comment entered'}`,
+                `Principal's comment: ${student.principalComment || 'No comment entered'}`,
+                '',
+                ...Object.entries(student.scores).map(([subject, score]) =>
+                    student.examComplete
+                        ? `${subject}: test ${score.test}/30, exam ${score.exam}/70, total ${score.test + score.exam}/100 (${(score.test + score.exam).toFixed(1)}%), grade ${calculateGrade(score.test + score.exam)} - ${calculateRemark(score.test + score.exam)}`
+                        : `${subject}: test ${score.test}/30 (${calculateTestPercentage(score.test)}%), grade ${calculateGrade(Number(calculateTestPercentage(score.test)))} - ${calculateRemark(Number(calculateTestPercentage(score.test)))}; exam pending`
+                ),
+                '',
+                `${student.examComplete ? 'Final overall' : 'Test-stage overall'}: ${student.totalMarks}/${student.maxMarks} (${student.percentage}%)`,
+                `Overall grade: ${student.grade} (${student.remark})`,
+                '',
+                'The result PDF is ready. Please attach the downloaded PDF to this WhatsApp chat.'
+            ];
+            const whatsappUrl = `https://wa.me/${student.phone}?text=${encodeURIComponent(lines.join('\n'))}`;
+            const whatsappWindow = window.open(whatsappUrl, '_blank');
+            if (whatsappWindow) whatsappWindow.opener = null;
+            viewReportModal(recordKey);
+            if (!whatsappWindow) {
+                showToast('Popup Blocked', 'Allow popups to open WhatsApp. The PDF preview is ready.');
+                return;
+            }
+            showToast('WhatsApp Prepared', 'Save the report as a PDF, then attach it in the opened WhatsApp chat.');
+        }
+
+        // ==========================================
+        // ADJUSTABLE SUBJECT MANAGER
+        // ==========================================
+        async function addNewSubject(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-subject-name').value.trim();
+            if (!name) return;
+            if (appState.subjects.some(subject => subject.toLowerCase() === name.toLowerCase())) {
+                showToast('Subject Already Exists', 'Enter a different subject name.');
+                return;
+            }
+            if (appState.subjects.length >= MAX_SUBJECTS) {
+                showToast('Subject Limit Reached', `You can configure up to ${MAX_SUBJECTS} subjects total.`);
+                return;
+            }
+            if (isLocalFile && !databaseReady) {
+                showToast('Storage Unavailable', 'Subjects cannot be saved right now.');
+                return;
+            }
+
+            const subjects = [...appState.subjects, name];
+            try {
+                await saveSubjects(subjects);
+                appState.subjects = subjects;
+                renderSubjectRows();
+                renderSubjectManagerList();
+                document.getElementById('new-subject-name').value = '';
+                showToast('Subject Added', `New subject "${name}" added to list.`);
+            } catch (error) {
+                console.error('Could not save subject list:', error);
+                if (error && error.name === 'QuotaExceededError' && isLocalFile) {
+                    showToast('Browser Storage Full', 'The browser has run out of space for this site. Download a results backup, then free space in this browser or use a browser profile with available storage.');
+                } else {
+                    showToast('Save Failed', isLocalFile
+                        ? `The subject could not be saved: ${error.message}`
+                        : `The subject could not be saved to the shared database: ${error.message}`);
+                }
+            }
+        }
+
+        async function removeSubject(subjectName) {
+            if (appState.subjects.length <= 1) {
+                showToast('Action Blocked', 'You must keep at least one subject in the system.');
+                return;
+            }
+            const subjects = appState.subjects.filter(subject => subject !== subjectName);
+            try {
+                await saveSubjects(subjects);
+                appState.subjects = subjects;
+                renderSubjectRows();
+                renderSubjectManagerList();
+                showToast('Subject Removed', `Subject "${subjectName}" removed from new result forms.`);
+            } catch (error) {
+                console.error('Could not save subject list:', error);
+                showToast('Save Failed', `The subject list could not be updated: ${error.message}`);
+            }
+        }
+
+        function renderSubjectManagerList() {
+            const container = document.getElementById('subject-list-container');
+            container.innerHTML = '';
+            const remaining = Math.max(0, MAX_SUBJECTS - appState.subjects.length);
+            document.getElementById('subject-limit-status').innerText =
+                `${appState.subjects.length} of ${MAX_SUBJECTS} subjects used. ${remaining} more can be added.`;
+            const addButton = document.getElementById('add-subject-button');
+            addButton.disabled = remaining === 0;
+            addButton.classList.toggle('opacity-50', addButton.disabled);
+            addButton.classList.toggle('cursor-not-allowed', addButton.disabled);
+
+            appState.subjects.forEach(sub => {
+                const li = document.createElement('li');
+                li.className = 'py-3 flex items-center justify-between';
+                const label = document.createElement('span');
+                label.className = 'font-bold text-slate-800';
+                label.textContent = sub;
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'text-rose-600 hover:text-rose-800 text-xs font-bold';
+                button.textContent = 'Remove';
+                button.addEventListener('click', () => removeSubject(sub));
+                li.append(label, button);
+                container.appendChild(li);
+            });
+        }
+
+        // ==========================================
+        // REPORT CARD MODAL & PRINTING
+        // ==========================================
+        function printReportPdf() {
+            const originalTitle = document.title;
+            const studentId = document.getElementById('rc-id').innerText;
+            const session = document.getElementById('rc-session').innerText;
+            const fileName = `Miracle-Result-${studentId}-${session}`
+                .replace(/[<>:"/\\|?*\x00-\x1F]/g, '-')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+            const restoreTitle = () => {
+                document.title = originalTitle;
+                window.removeEventListener('afterprint', restoreTitle);
+            };
+
+            document.title = fileName;
+            window.addEventListener('afterprint', restoreTitle);
+            window.print();
+        }
+
+        function viewReportModal(recordKey) {
+            const student = appState.students.find(result => result.recordKey === recordKey);
+            if (!student) return;
+
+            document.getElementById('rc-name').innerText = student.name;
+            document.getElementById('rc-id').innerText = student.id;
+            document.getElementById('rc-sex').innerText = student.sex;
+            document.getElementById('rc-class').innerText = student.class;
+            document.getElementById('rc-class-size').innerText = student.classSize || 'Not recorded';
+            document.getElementById('rc-session').innerText = student.session;
+            document.getElementById('rc-teacher-comment').textContent = student.teacherComment || 'No comment entered.';
+            document.getElementById('rc-principal-comment').textContent = student.principalComment || 'No comment entered.';
+            document.getElementById('rc-percentage').innerText = `${student.percentage}%`;
+            document.getElementById('rc-final-grade').innerText = `${student.grade} - ${student.remark}`;
+            document.getElementById('report-exam-header').innerText = student.examComplete ? 'Exam (70)' : 'Exam (Pending)';
+            document.getElementById('report-total-header').innerText = student.examComplete ? 'Total (100)' : 'Test Total (30)';
+            document.getElementById('report-percentage-header').innerText = student.examComplete ? 'Final Percentage' : 'Test Percentage';
+            document.getElementById('report-overall-percentage-label').innerText =
+                student.examComplete ? 'Final Overall Percentage:' : 'Test-Stage Overall Percentage:';
+
+            const tbody = document.getElementById('rc-table-body');
+            tbody.innerHTML = '';
+
+            Object.entries(student.scores).forEach(([subject, score]) => {
+                const total = student.examComplete ? score.test + score.exam : score.test;
+                const percentage = student.examComplete ? total : Number(calculateTestPercentage(score.test));
+                const grade = calculateGrade(percentage);
+                const remark = calculateRemark(percentage);
+                const row = document.createElement('tr');
+                [subject, score.test, score.exam ?? '—', total, `${percentage.toFixed(1)}%`, grade, remark].forEach((value, index) => {
+                    const cell = document.createElement('td');
+                    cell.className = index === 0 ? 'p-2 font-bold' : 'p-2 text-center';
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        // ==========================================
+        // TOAST NOTIFIER
+        // ==========================================
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
