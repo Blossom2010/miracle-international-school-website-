@@ -33,7 +33,7 @@ If the browser says **Cannot GET /admin**, it is likely connected to a static se
 
 GitHub Pages cannot run Node.js or `server.js`. This project includes a `render.yaml` Blueprint for a Node web service with a persistent disk for the SQLite database. The persistent disk requires a paid Render service; do not remove it or store the database on the temporary application filesystem.
 
-1. Put the complete project, including `server.js`, `package.json`, `package-lock.json`, `index.html`, `student.html`, and `render.yaml`, in a GitHub repository. Do not upload `.env`, `.private`, or database files.
+1. Put the complete project, including `server.js`, `package.json`, `package-lock.json`, `index.html`, `student.html`, the `image` folder, and `render.yaml`, in a GitHub repository. Do not upload `.env`, `.private`, or database files.
 2. In Render, create a new **Blueprint** and connect that repository. Review the Blueprint and deploy the `miracle-school-portal` service.
 3. Wait for the service health check to pass, then open the Render service URL with `/admin` (for example, `https://your-service.onrender.com/admin`). Create the first admin account there. Use `/student` for the student portal. Do not use the GitHub Pages URL for signing in or creating accounts.
 4. If you use password reset or parent-result emails, set `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, and `MAIL_FROM` as secret/environment variables in the Render service settings. Never commit these credentials.

@@ -34,6 +34,7 @@ app.use((req, res, next) => {
     res.setHeader('Referrer-Policy', 'no-referrer');
     next();
 });
+app.use('/image', express.static(path.join(__dirname, 'image'), { index: false }));
 
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
