@@ -25,7 +25,7 @@ You can also run the setup steps manually:
    npm start
    ```
 
-The Node server creates the SQLite database and its tables automatically on first start at `private/miracle-school.sqlite`. The first admin account is created from the Admin Portal setup form when the database has no admin account. Existing databases keep their saved administrator account. The `private` folder and `.env` are excluded from source control. Back up the `private` folder to preserve the database. Do not open `index.html` directly when using email resets or shared results; those need the server API.
+The Node server creates the SQLite database and its tables automatically on first start at `private/miracle-school.sqlite`. The first admin account is created from the Admin Portal setup form when the database has no admin account. Existing databases keep their saved administrator account. The `private` folder contains a tracked empty placeholder so it exists in deployments; SQLite databases, database journal files, and legacy teacher-account files are excluded from Git and Vercel deployments. Back up the local `private` folder securely to preserve the database. Do not open `index.html` directly when using email resets or shared results; those need the server API.
 
 If the browser says **Cannot GET /admin**, it is likely connected to a static server such as VS Code Live Server instead of this Node app. Start the app with `npm start` and use `http://localhost:3000/admin`; the Admin and Teacher routes are handled by `server.js`.
 

@@ -1,3 +1,5 @@
 node_modules/
 .env
-
+private/*.sqlite*
+private/*.db*
+private/teacher-account.json

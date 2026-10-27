@@ -1,4 +1,7 @@
 require('dotenv').config();
+const { createClient } = require('@libsql/client');
+const client = createClient({ url: process.env.DATABASE_URL });
+createClient({ url: process.env.DATABASE_URL }); 
 
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');

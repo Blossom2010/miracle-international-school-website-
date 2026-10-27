@@ -9,6 +9,7 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "axios": "^1.12.2",
     "better-sqlite3": "^12.10.1",
     "dotenv": "^16.4.7",
