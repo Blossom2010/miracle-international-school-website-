@@ -415,9 +415,17 @@
                         <i class="fa-solid fa-sliders"></i>
                         <span>Manage Subjects</span>
                     </button>
+                    <button onclick="switchTab('attendance')" id="tab-btn-attendance" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-clipboard-user"></i>
+                        <span>Attendance</span>
+                    </button>
                     <button onclick="switchTab('admin')" id="tab-btn-admin" class="tab-btn hidden bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Admin: Teachers</span>
+                    </button>
+                    <button onclick="switchTab('exams')" id="tab-btn-exams" class="tab-btn bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-clipboard-question"></i>
+                        <span>CBT Exams</span>
                     </button>
                 </div>
             </div>
@@ -438,7 +446,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Student Full Name *</label>
-                            <input type="text" id="std-name" required placeholder="e.g. David Adebayo" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                            <input type="text" id="std-name" required placeholder="pelumi-ojo Blossom" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
                         </div>
 
                         <div>
@@ -731,7 +739,7 @@
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <div>
                                     <h3 class="font-bold text-slate-900">Import Students & Login Passwords (CSV)</h3>
-                                    <p class="mt-1 text-[11px] text-slate-500">Required: studentId, name, class, guardianEmail. Optional: guardianPhone, studentPassword (at least 8 characters).</p>
+                                    <p class="mt-1 text-[11px] text-slate-500">Required: studentId, name, class, guardianEmail. Optional: guardianPhone, studentPassword, guardianWhatsAppOptIn (true/yes/1 only when the guardian has agreed).</p>
                                 </div>
                                 <button type="button" onclick="downloadStudentCsvTemplate()" class="text-xs font-bold text-orange-700 hover:underline">Download CSV Template</button>
                             </div>
@@ -761,6 +769,10 @@
                             </label>
                             <label class="text-xs font-bold">Guardian Phone (optional)
                                 <input id="admin-student-guardian-phone" type="tel" maxlength="30" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="Phone number">
+                            </label>
+                            <label class="flex items-center gap-2 text-xs font-semibold sm:col-span-2 lg:col-span-3">
+                                <input id="admin-student-whatsapp-opt-in" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-green-700">
+                                Guardian has agreed to receive released result PDFs on WhatsApp
                             </label>
                             <label class="text-xs font-bold">Student Password
                                 <input id="admin-student-password" type="password" required minlength="8" maxlength="128" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="At least 8 characters">
@@ -839,7 +851,7 @@
                         <h2 class="text-lg font-extrabold text-slate-900">Teacher Accounts</h2>
                         <p class="mt-1 text-xs text-slate-500">Create staff accounts, disable access, or remove accounts. Disabled and removed teachers are signed out immediately.</p>
                     </div>
-                    <form onsubmit="createTeacherAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+                    <form onsubmit="createTeacherAccount(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
                         <div>
                             <label for="admin-teacher-username" class="block text-xs font-bold text-slate-700 mb-1">Teacher Username</label>
                             <input id="admin-teacher-username" type="text" required minlength="3" maxlength="32" pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,31}" autocomplete="off" placeholder="e.g. teacher.jane" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
@@ -848,6 +860,10 @@
                         <div>
                             <label for="admin-teacher-email" class="block text-xs font-bold text-slate-700 mb-1">Teacher Email</label>
                             <input id="admin-teacher-email" type="email" required maxlength="254" autocomplete="email" placeholder="teacher@school.edu" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
+                        </div>
+                        <div>
+                            <label for="admin-teacher-class" class="block text-xs font-bold text-slate-700 mb-1">Assigned Class</label>
+                            <input id="admin-teacher-class" type="text" required maxlength="80" autocomplete="off" placeholder="e.g. JSS 1" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:ring-2 focus:ring-orange-500 outline-none">
                         </div>
                         <div>
                             <label for="admin-teacher-password" class="block text-xs font-bold text-slate-700 mb-1">Teacher Password</label>
@@ -869,6 +885,7 @@
                                 <tr class="bg-slate-900 text-white uppercase text-[10px]">
                                     <th class="p-3">Teacher Username</th>
                                     <th class="p-3">Teacher Email</th>
+                                    <th class="p-3">Assigned Class</th>
                                     <th class="p-3">Created</th>
                                     <th class="p-3 text-center">Active Sessions</th>
                                     <th class="p-3 text-center">Account Status</th>
@@ -876,11 +893,104 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-teachers-tbody" class="divide-y divide-slate-100 font-medium">
-                                <tr><td colspan="6" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>
+                                <tr><td colspan="7" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+
+            <div id="tab-content-exams" class="hidden space-y-6">
+                <section id="exam-admin-controls" class="hidden space-y-5 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:p-6">
+                    <div>
+                        <h2 class="text-lg font-extrabold text-slate-900">Create a CBT Exam</h2>
+                        <p class="mt-1 text-xs leading-5 text-slate-500">Import a CSV exported from Word/Excel. Both sections share one total timer. After the exam, only objective questions, answer keys, and student choices go to the assigned class teacher for manual scoring. Theory answers stay private.</p>
+                    </div>
+                    <form id="exam-create-form" onsubmit="createExam(event)" class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        <label class="text-xs font-bold">Exam title
+                            <input id="exam-title" required maxlength="120" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="e.g. Mid-term examination">
+                        </label>
+                        <label class="text-xs font-bold">Subject
+                            <input id="exam-subject" required maxlength="120" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="e.g. Mathematics">
+                        </label>
+                        <label class="text-xs font-bold">Class
+                            <input id="exam-class" required maxlength="80" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" placeholder="e.g. JSS 1">
+                        </label>
+                        <label class="text-xs font-bold">Scheduled start (your local time)
+                            <input id="exam-start" required type="datetime-local" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+                        </label>
+                        <label class="text-xs font-bold">Student access code
+                            <input id="exam-code" required type="text" inputmode="numeric" pattern="[0-9]{4}" minlength="4" maxlength="4" autocomplete="off" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 tracking-[0.3em]" placeholder="4 digits">
+                        </label>
+                        <label class="text-xs font-bold">Total exam time (hours)
+                            <input id="exam-duration-hours" required type="number" min="0" max="23" value="1" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+                        </label>
+                        <label class="text-xs font-bold">Total exam time (minutes)
+                            <input id="exam-duration-minutes" required type="number" min="0" max="59" value="0" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+                        </label>
+                        <div class="sm:col-span-2 lg:col-span-3 rounded-xl border border-slate-200 p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <h3 class="font-bold text-slate-900">Question CSV</h3>
+                                    <p class="mt-1 text-[11px] text-slate-500">Headers: type, question, optionA, optionB, optionC, optionD, correctAnswer, mark, answerGuide. Objective correctAnswer is A-D; theory questions use answerGuide.</p>
+                                </div>
+                                <button type="button" onclick="downloadExamCsvTemplate()" class="text-xs font-bold text-orange-700 hover:underline">Download CSV template</button>
+                            </div>
+                            <input id="exam-csv-file" required type="file" accept=".csv,text/csv" class="mt-3 max-w-full text-xs">
+                        </div>
+                        <button class="rounded-lg bg-orange-600 px-4 py-3 text-xs font-bold text-white hover:bg-orange-700 sm:col-span-2 lg:col-span-3">Create Exam</button>
+                    </form>
+                    <p id="exam-code-notice" role="status" aria-live="polite" class="hidden break-words rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-900"></p>
+                </section>
+
+                <section class="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h2 class="text-lg font-extrabold text-slate-900">Exams & Teacher Reports</h2>
+                            <p class="mt-1 text-xs text-slate-500">Only the teacher assigned to the exam class can review objective questions, answer keys, and student choices after the exam ends. Enter each student's objective score in the score sheet. Theory answers are never included in teacher reports.</p>
+                        </div>
+                        <button type="button" onclick="loadExamDashboard()" class="rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white"><i class="fa-solid fa-rotate mr-1"></i> Refresh</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead><tr class="bg-slate-900 text-white"><th class="p-3">Exam</th><th class="p-3">Class</th><th class="p-3">Scheduled</th><th class="p-3">Questions / attempts</th><th class="p-3">Status</th><th class="p-3 text-right">Action</th></tr></thead>
+                            <tbody id="exam-list-rows"><tr><td colspan="6" class="p-4 text-center text-slate-500">Load exams to view reports.</td></tr></tbody>
+                        </table>
+                    </div>
+                    <div id="exam-report" class="space-y-4"></div>
+                </section>
+            </div>
+
+            <div id="tab-content-attendance" class="hidden space-y-6">
+                <section class="space-y-5 rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:p-6">
+                    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h2 class="text-lg font-extrabold text-slate-900">Class Attendance Sheet</h2>
+                            <p id="attendance-class-label" class="mt-1 text-xs text-slate-500">Saved student names stay on your class list for future attendance.</p>
+                        </div>
+                        <label class="text-xs font-bold">Attendance date
+                            <input id="attendance-date" required type="date" onchange="loadAttendanceSheet()" class="mt-1 rounded-lg border border-slate-200 px-3 py-2">
+                        </label>
+                    </div>
+                    <form id="attendance-add-form" onsubmit="addAttendanceStudent(event)" class="flex flex-col gap-2 sm:flex-row">
+                        <label for="attendance-student-name" class="sr-only">Student name</label>
+                        <input id="attendance-student-name" required maxlength="120" class="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-sm" placeholder="Enter a student name to add to your class list">
+                        <button class="rounded-lg bg-orange-600 px-4 py-2 text-xs font-bold text-white hover:bg-orange-700"><i class="fa-solid fa-user-plus mr-1"></i> Add Student</button>
+                    </form>
+                    <div class="flex flex-wrap gap-3 text-xs font-bold">
+                        <span class="rounded-full bg-green-100 px-3 py-1 text-green-800">Present: <span id="attendance-present-count">0</span></span>
+                        <span class="rounded-full bg-red-100 px-3 py-1 text-red-800">Absent: <span id="attendance-absent-count">0</span></span>
+                        <span class="rounded-full bg-amber-100 px-3 py-1 text-amber-800">Not marked: <span id="attendance-unmarked-count">0</span></span>
+                    </div>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full min-w-[680px] text-left text-xs">
+                            <thead><tr class="bg-slate-900 text-white"><th class="p-3">#</th><th class="p-3">Student name</th><th class="p-3">Attendance</th><th class="p-3">Reason if absent</th><th class="p-3 text-right">Actions</th></tr></thead>
+                            <tbody id="attendance-student-rows">
+                                <tr><td colspan="5" class="p-4 text-center text-slate-500">Choose a date to load attendance.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
 
         </section>
@@ -1208,6 +1318,9 @@
         // DOM Initialization
         document.addEventListener("DOMContentLoaded", async () => {
             const splash = document.getElementById('welcome-splash');
+            const today = new Date();
+            document.getElementById('attendance-date').value =
+                new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
             window.setTimeout(() => {
                 splash.classList.add('opacity-0', 'pointer-events-none');
                 window.setTimeout(() => splash.classList.add('hidden'), 500);
@@ -1432,6 +1545,8 @@
             document.getElementById('nav-user-role').innerText =
                 profile.role === 'admin' ? 'School Administrator' : 'Authorized Teacher';
             const isAdmin = profile.role === 'admin';
+            document.getElementById('exam-admin-controls').classList.toggle('hidden', !isAdmin);
+            document.getElementById('tab-btn-attendance').classList.toggle('hidden', isAdmin);
             document.getElementById('dashboard-title').textContent = isAdmin
                 ? 'Miracle International School Administration'
                 : 'Miracle International School Result Portal';
@@ -1627,6 +1742,13 @@
                     class: student.class,
                     guardianEmail: student.guardianemail,
                     guardianPhone: student.guardianphone || '',
+                    guardianWhatsAppOptIn: (() => {
+                        const value = (student.guardianwhatsappoptin || '').trim().toLowerCase();
+                        if (!value) return null;
+                        if (['true', 'yes', '1'].includes(value)) return true;
+                        if (['false', 'no', '0'].includes(value)) return false;
+                        throw new Error('guardianWhatsAppOptIn must be true/yes/1, false/no/0, or blank.');
+                    })(),
                     password: student.studentpassword || ''
                 }));
         }
@@ -1653,7 +1775,7 @@
         }
 
         function downloadStudentCsvTemplate() {
-            const csv = 'studentId,name,class,guardianEmail,guardianPhone,studentPassword\r\nMIS/2026/101,Emmanuel Johnson,JSS 1,parent@example.com,08000000000,\r\n';
+            const csv = 'studentId,name,class,guardianEmail,guardianPhone,studentPassword,guardianWhatsAppOptIn\r\nMIS/2026/101,Emmanuel Johnson,JSS 1,parent@example.com,08000000000,,\r\n';
             const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
             const link = document.createElement('a');
             link.href = url;
@@ -1670,6 +1792,7 @@
                 className: document.getElementById('admin-student-class').value.trim(),
                 guardianEmail: document.getElementById('admin-student-guardian-email').value.trim(),
                 guardianPhone: document.getElementById('admin-student-guardian-phone').value.trim(),
+                guardianWhatsAppOptIn: document.getElementById('admin-student-whatsapp-opt-in').checked,
                 password: document.getElementById('admin-student-password').value
             };
             try {
@@ -1798,17 +1921,21 @@
         async function loadTeacherAccounts() {
             const tbody = document.getElementById('admin-teachers-tbody');
             if (appState.teacherRole !== 'admin' || isLocalFile) return;
-            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-500">Loading teacher accounts...</td></tr>';
             try {
                 const teachers = await requestSchoolApi('/api/admin/teachers');
                 if (!teachers.length) {
-                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">No teacher accounts have been created.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-500">No teacher accounts have been created.</td></tr>';
                     return;
                 }
                 tbody.innerHTML = teachers.map(teacher => `
                     <tr>
                         <td class="p-3">${escapeHTML(teacher.username || teacher.email)}</td>
                         <td class="p-3">${escapeHTML(teacher.email)}</td>
+                        <td class="p-3 whitespace-nowrap">
+                            <input id="teacher-class-${Number(teacher.id)}" value="${escapeHTML(teacher.className || '')}" maxlength="80" placeholder="Assign class" class="w-28 rounded border border-slate-200 px-2 py-1">
+                            <button type="button" onclick="assignTeacherClass(${Number(teacher.id)})" class="ml-1 font-bold text-orange-700">Save</button>
+                        </td>
                         <td class="p-3">${escapeHTML(new Date(teacher.createdAt).toLocaleDateString())}</td>
                         <td class="p-3 text-center">${Number(teacher.activeSessions) || 0}</td>
                         <td class="p-3 text-center">
@@ -1827,7 +1954,281 @@
                     </tr>`).join('');
             } catch (error) {
                 console.error('Could not load teacher accounts:', error);
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-red-600">${escapeHTML(error.message)}</td></tr>`;
+            }
+        }
+
+        function downloadExamCsvTemplate() {
+            const csv = [
+                'type,question,optionA,optionB,optionC,optionD,correctAnswer,mark,answerGuide',
+                'objective,"What is 2 + 2?",3,4,5,6,B,2,',
+                'theory,"Explain how plants make food.",,,,,,5,"Photosynthesis uses sunlight, water, and carbon dioxide to make glucose and oxygen."'
+            ].join('\r\n');
+            const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'miracle-school-exam-question-template.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function createExam(event) {
+            event.preventDefault();
+            const file = document.getElementById('exam-csv-file').files[0];
+            const startsAtValue = document.getElementById('exam-start').value;
+            if (!file || !startsAtValue) {
+                showToast('Exam Details Required', 'Choose a question CSV and scheduled start time.');
+                return;
+            }
+            const notice = document.getElementById('exam-code-notice');
+            notice.classList.add('hidden');
+            try {
+                const exam = await requestSchoolApi('/api/admin/exams', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: document.getElementById('exam-title').value.trim(),
+                        subject: document.getElementById('exam-subject').value.trim(),
+                        className: document.getElementById('exam-class').value.trim(),
+                        startsAt: new Date(startsAtValue).toISOString(),
+                        code: document.getElementById('exam-code').value.trim(),
+                        durationHours: Number(document.getElementById('exam-duration-hours').value),
+                        durationMinutes: Number(document.getElementById('exam-duration-minutes').value),
+                        csv: await file.text()
+                    })
+                });
+                notice.textContent = `Exam created. Give this access code to ${exam.exam.className} students: ${exam.code}. You can change it before the scheduled start.`;
+                notice.classList.remove('hidden');
+                event.target.reset();
+                document.getElementById('exam-duration-hours').value = '1';
+                document.getElementById('exam-duration-minutes').value = '0';
+                await loadExamDashboard();
+                showToast('Exam Created', `${exam.exam.title} is scheduled for ${new Date(exam.exam.startsAt).toLocaleString()}.`);
+            } catch (error) {
+                showToast('Unable to Create Exam', error.message);
+            }
+        }
+
+        async function loadExamDashboard() {
+            const tbody = document.getElementById('exam-list-rows');
+            if (!appState.teacherLoggedIn || isLocalFile) return;
+            tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Loading exams...</td></tr>';
+            try {
+                const exams = await requestSchoolApi('/api/teacher/exams');
+                if (!exams.length) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">No exams are assigned to your class.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = exams.map(exam => {
+                    const reportAction = exam.status === 'closed'
+                        ? `<button type="button" onclick="loadExamReport(${Number(exam.id)})" class="font-bold text-orange-700 hover:underline">View report</button>`
+                        : appState.teacherRole === 'admin' && exam.status === 'upcoming'
+                            ? `<button type="button" onclick="rotateExamCode(${Number(exam.id)})" class="font-bold text-orange-700 hover:underline">New code</button>`
+                            : '<span class="text-slate-400">After exam</span>';
+                    return `<tr class="border-b border-slate-100">
+                        <td class="p-3"><strong>${escapeHTML(exam.title)}</strong><br><span class="text-slate-500">${escapeHTML(exam.subject)}</span></td>
+                        <td class="p-3">${escapeHTML(exam.className)}</td>
+                        <td class="p-3">${escapeHTML(new Date(exam.startsAt).toLocaleString())}</td>
+                        <td class="p-3">${Number(exam.questionCount)} / ${Number(exam.attemptCount)}</td>
+                        <td class="p-3"><span class="rounded-full bg-slate-100 px-2 py-1 font-bold">${escapeHTML(exam.status)}</span></td>
+                        <td class="p-3 text-right">${reportAction}</td>
+                    </tr>`;
+                }).join('');
+            } catch (error) {
                 tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-600">${escapeHTML(error.message)}</td></tr>`;
+            }
+        }
+
+        async function loadAttendanceSheet() {
+            const tbody = document.getElementById('attendance-student-rows');
+            if (!appState.teacherLoggedIn || appState.teacherRole !== 'teacher' || isLocalFile) return;
+            const date = document.getElementById('attendance-date').value;
+            if (!date) return;
+            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">Loading attendance...</td></tr>';
+            try {
+                const attendance = await requestSchoolApi(`/api/teacher/attendance?date=${encodeURIComponent(date)}`);
+                document.getElementById('attendance-class-label').textContent =
+                    `Class: ${attendance.className} • Saved student names stay on your class list for future attendance.`;
+                renderAttendanceStudents(attendance.students);
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-600">${escapeHTML(error.message)}</td></tr>`;
+            }
+        }
+
+        function renderAttendanceStudents(students) {
+            const tbody = document.getElementById('attendance-student-rows');
+            const presentCount = students.filter(student => student.status === 'present').length;
+            const absentCount = students.filter(student => student.status === 'absent').length;
+            document.getElementById('attendance-present-count').textContent = presentCount;
+            document.getElementById('attendance-absent-count').textContent = absentCount;
+            document.getElementById('attendance-unmarked-count').textContent = students.length - presentCount - absentCount;
+            if (!students.length) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No students on your class list yet. Add names above to get started.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = students.map((student, index) => {
+                const status = student.status || 'unmarked';
+                const statusClass = status === 'present' ? 'bg-green-100 text-green-800'
+                    : status === 'absent' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800';
+                const statusLabel = status === 'unmarked' ? 'Not marked' : status[0].toUpperCase() + status.slice(1);
+                return `<tr class="border-b border-slate-100">
+                    <td class="p-3 text-slate-500">${index + 1}</td>
+                    <td class="p-3 font-bold text-slate-900">${escapeHTML(student.name)}</td>
+                    <td class="p-3"><span class="rounded-full px-3 py-1 font-bold ${statusClass}">${statusLabel}</span></td>
+                    <td class="p-3 whitespace-pre-wrap text-red-700">${status === 'absent' ? escapeHTML(student.reason) : '<span class="text-slate-400">—</span>'}</td>
+                    <td class="p-3 text-right whitespace-nowrap">
+                        <button type="button" data-attendance-id="${Number(student.id)}" data-attendance-status="present" class="rounded-lg px-3 py-2 font-bold ${status === 'present' ? 'bg-green-700 text-white' : 'bg-green-100 text-green-800 hover:bg-green-200'}">${status === 'present' ? 'Present ✓' : 'Present'}</button>
+                        <button type="button" data-attendance-id="${Number(student.id)}" data-attendance-status="absent" data-attendance-reason="${escapeHTML(student.reason || '')}" class="ml-1 rounded-lg px-3 py-2 font-bold ${status === 'absent' ? 'bg-red-700 text-white' : 'bg-red-100 text-red-800 hover:bg-red-200'}">${status === 'absent' ? 'Absent ✓' : 'Absent'}</button>
+                        <button type="button" data-remove-attendance-id="${Number(student.id)}" class="ml-2 font-bold text-slate-500 hover:text-red-700" aria-label="Remove ${escapeHTML(student.name)} from class list">Remove</button>
+                    </td>
+                </tr>`;
+            }).join('');
+            tbody.querySelectorAll('[data-attendance-status]').forEach(button => {
+                button.addEventListener('click', () => markAttendance(
+                    Number(button.dataset.attendanceId),
+                    button.dataset.attendanceStatus,
+                    button.dataset.attendanceReason || ''
+                ));
+            });
+            tbody.querySelectorAll('[data-remove-attendance-id]').forEach(button => {
+                button.addEventListener('click', () => removeAttendanceStudent(Number(button.dataset.removeAttendanceId)));
+            });
+        }
+
+        async function addAttendanceStudent(event) {
+            event.preventDefault();
+            const input = document.getElementById('attendance-student-name');
+            try {
+                await requestSchoolApi('/api/teacher/attendance/students', {
+                    method: 'POST',
+                    body: JSON.stringify({ name: input.value.trim() })
+                });
+                input.value = '';
+                await loadAttendanceSheet();
+                showToast('Student Added', 'The name is saved to your class attendance list.');
+            } catch (error) {
+                showToast('Unable to Add Student', error.message);
+            }
+        }
+
+        async function markAttendance(studentId, status, existingReason) {
+            const reason = status === 'absent'
+                ? window.prompt('Enter the reason for this student’s absence:', existingReason)
+                : '';
+            if (status === 'absent' && reason === null) return;
+            if (status === 'absent' && !reason.trim()) {
+                showToast('Reason Required', 'Enter a reason before marking the student absent.');
+                return;
+            }
+            try {
+                await requestSchoolApi(`/api/teacher/attendance/students/${studentId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        date: document.getElementById('attendance-date').value,
+                        status,
+                        reason: status === 'absent' ? reason.trim() : ''
+                    })
+                });
+                await loadAttendanceSheet();
+            } catch (error) {
+                showToast('Unable to Save Attendance', error.message);
+            }
+        }
+
+        async function removeAttendanceStudent(studentId) {
+            if (!confirm('Remove this student from the saved class list? Their attendance history will also be deleted.')) return;
+            try {
+                await requestSchoolApi(`/api/teacher/attendance/students/${studentId}`, { method: 'DELETE' });
+                await loadAttendanceSheet();
+                showToast('Student Removed', 'The student and their attendance history were removed.');
+            } catch (error) {
+                showToast('Unable to Remove Student', error.message);
+            }
+        }
+
+        async function rotateExamCode(id) {
+            const code = window.prompt('Enter a new four-digit numeric code. The previous code will stop working.', '');
+            if (code === null) return;
+            if (!/^\d{4}$/.test(code.trim())) {
+                showToast('Invalid Exam Code', 'Enter exactly four digits.');
+                return;
+            }
+            try {
+                const result = await requestSchoolApi(`/api/admin/exams/${id}/code`, {
+                    method: 'POST',
+                    body: JSON.stringify({ code: code.trim() })
+                });
+                const notice = document.getElementById('exam-code-notice');
+                notice.textContent = `Replacement exam code: ${result.code}. Share this code with the class; the previous code is no longer valid.`;
+                notice.classList.remove('hidden');
+                showToast('Exam Code Replaced', 'The previous code is no longer valid.');
+            } catch (error) {
+                showToast('Unable to Replace Exam Code', error.message);
+            }
+        }
+
+        async function loadExamReport(id) {
+            const reportPanel = document.getElementById('exam-report');
+            reportPanel.innerHTML = '<p class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">Loading exam report...</p>';
+            try {
+                const report = await requestSchoolApi(`/api/teacher/exams/${id}/report`);
+                reportPanel.innerHTML = report.attempts.length ? report.attempts.map(attempt => {
+                    const questionRows = report.questions.map(question => {
+                        const response = attempt.answers[question.index];
+                        const selectedText = /^[A-D]$/.test(response || '') ? question.options['ABCD'.indexOf(response)] : '';
+                        const score = attempt.objectiveScores[question.index];
+                        return `<article class="rounded-lg border border-slate-200 p-3">
+                            <p class="font-bold">${question.index + 1}. ${escapeHTML(question.question)} <span class="text-slate-500">(up to ${Number(question.marks)} marks)</span></p>
+                            <p class="mt-1 text-xs"><strong>Student selected:</strong> ${response === undefined ? 'No answer' : `${escapeHTML(response)}${selectedText ? ` — ${escapeHTML(selectedText)}` : ''}`}</p>
+                            <p class="text-xs text-green-800"><strong>Correct answer:</strong> ${escapeHTML(question.correctAnswer)} — ${escapeHTML(question.correctText)}</p>
+                            <label class="mt-2 flex items-center gap-2 text-xs font-bold">Score
+                                <input required type="number" min="0" max="${Number(question.marks)}" step="any" value="${score === undefined ? '' : Number(score)}" data-objective-score="${Number(question.index)}" data-max-score="${Number(question.marks)}" oninput="updateObjectiveScorePreview(this.form)" class="w-24 rounded border border-slate-200 px-2 py-1">
+                                <span>/ ${Number(question.marks)}</span>
+                            </label>
+                        </article>`;
+                    }).join('');
+                    const gradeStatus = attempt.isGraded ? 'Score saved' : 'Not scored yet';
+                    return `<article class="rounded-xl border border-orange-200 p-4">
+                        <div class="flex flex-wrap items-start justify-between gap-2">
+                            <div><h3 class="font-extrabold">${escapeHTML(attempt.name)} <span class="font-normal text-slate-500">(${escapeHTML(attempt.studentId)})</span></h3>
+                            <p class="text-xs text-slate-500">${escapeHTML(attempt.className)} • Submitted ${escapeHTML(new Date(attempt.submittedAt).toLocaleString())}</p></div>
+                            <p class="rounded-lg bg-orange-50 px-3 py-2 text-sm font-bold text-orange-800">${gradeStatus}: <span data-score-preview>${attempt.isGraded ? Number(attempt.objectiveScore) : '—'}</span> / ${Number(attempt.objectiveTotal)} marks</p>
+                        </div>
+                        ${report.questions.length ? `<form onsubmit="saveExamObjectiveScores(event, ${Number(report.exam.id)}, ${Number(attempt.id)})" class="mt-3 space-y-3">
+                            <p class="text-xs text-slate-600">Review each student's choice against the answer key, enter a score for every question (0 to the question's maximum), then save the total.</p>
+                            <div class="space-y-2">${questionRows}</div>
+                            <button class="rounded-lg bg-orange-600 px-4 py-2 text-xs font-bold text-white hover:bg-orange-700">Save Objective Score</button>
+                        </form>` : '<p class="mt-3 rounded-lg bg-slate-50 p-3 text-xs text-slate-600">This exam contains no objective questions. Theory responses and answer guides are private and are not shown here.</p>'}
+                    </article>`;
+                }).join('') : '<p class="rounded-xl bg-slate-50 p-4 text-sm text-slate-500">No students started this exam.</p>';
+                reportPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                reportPanel.innerHTML = `<p class="rounded-xl bg-red-50 p-4 text-sm text-red-700">${escapeHTML(error.message)}</p>`;
+            }
+        }
+
+        function updateObjectiveScorePreview(form) {
+            const score = Array.from(form.querySelectorAll('[data-objective-score]'))
+                .reduce((total, input) => total + (input.value === '' ? 0 : Number(input.value)), 0);
+            const preview = form.closest('article').querySelector('[data-score-preview]');
+            preview.textContent = score;
+        }
+
+        async function saveExamObjectiveScores(event, examId, attemptId) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const scores = {};
+            form.querySelectorAll('[data-objective-score]').forEach(input => {
+                scores[input.dataset.objectiveScore] = Number(input.value);
+            });
+            try {
+                await requestSchoolApi(`/api/teacher/exams/${examId}/attempts/${attemptId}/score`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ scores })
+                });
+                showToast('Objective Score Saved', 'The student total has been saved.');
+                await loadExamReport(examId);
+            } catch (error) {
+                showToast('Unable to Save Objective Score', error.message);
             }
         }
 
@@ -1856,11 +2257,12 @@
             event.preventDefault();
             const username = document.getElementById('admin-teacher-username').value.trim();
             const email = document.getElementById('admin-teacher-email').value.trim();
+            const className = document.getElementById('admin-teacher-class').value.trim();
             const password = document.getElementById('admin-teacher-password').value;
             try {
                 await requestSchoolApi('/api/admin/teachers', {
                     method: 'POST',
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ username, email, className, password })
                 });
                 event.target.reset();
                 await loadTeacherAccounts();
@@ -1880,6 +2282,20 @@
                 showToast('Teacher Account Updated', isActive ? 'Teacher access is enabled.' : 'Teacher access is disabled and sessions were ended.');
             } catch (error) {
                 showToast('Unable to Update Account', error.message);
+            }
+        }
+
+        async function assignTeacherClass(id) {
+            const className = document.getElementById(`teacher-class-${id}`).value.trim();
+            try {
+                await requestSchoolApi(`/api/admin/teachers/${id}`, {
+                    method: 'PATCH',
+                    body: JSON.stringify({ className })
+                });
+                await loadTeacherAccounts();
+                showToast('Class Assigned', 'This teacher can view exam reports for the assigned class.');
+            } catch (error) {
+                showToast('Unable to Assign Class', error.message);
             }
         }
 
@@ -1968,7 +2384,7 @@
         // TAB SWITCHING
         // ==========================================
         function switchTab(tab) {
-            if (appState.teacherRole === 'admin' && tab !== 'admin') {
+            if (appState.teacherRole === 'admin' && !['admin', 'exams'].includes(tab)) {
                 showToast('Teacher Portal Only', 'Academic result entry, search, and subject tools are available in the Teacher Portal.');
                 return;
             }
@@ -1987,7 +2403,11 @@
             document.getElementById('tab-content-database').classList.add('hidden');
             document.getElementById('tab-content-subjects').classList.add('hidden');
             document.getElementById('tab-content-admin').classList.add('hidden');
+            document.getElementById('tab-content-exams').classList.add('hidden');
+            document.getElementById('tab-content-attendance').classList.add('hidden');
             document.getElementById(`tab-content-${tab}`).classList.remove('hidden');
+            if (tab === 'exams') loadExamDashboard();
+            if (tab === 'attendance') loadAttendanceSheet();
         }
 
         // ==========================================
@@ -2418,7 +2838,19 @@
                 emailButton.disabled = !student.publishedAt;
                 emailButton.addEventListener('click', () => emailResultToParent(student, emailButton));
 
-                actionCell.append(viewButton, emailButton, sendButton);
+                const whatsappPdfButton = document.createElement('button');
+                whatsappPdfButton.type = 'button';
+                whatsappPdfButton.className = student.publishedAt
+                    ? 'bg-green-700 hover:bg-green-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg'
+                    : 'cursor-not-allowed bg-slate-200 text-slate-500 text-[11px] font-bold px-3 py-1.5 rounded-lg';
+                whatsappPdfButton.textContent = student.publishedAt ? 'Send WhatsApp PDF' : 'Awaiting Release';
+                whatsappPdfButton.title = student.publishedAt
+                    ? 'Send the released PDF to the guardian WhatsApp number on the student record.'
+                    : 'The admin must release this result before it can be sent.';
+                whatsappPdfButton.disabled = !student.publishedAt;
+                whatsappPdfButton.addEventListener('click', () => sendWhatsAppPdf(student, whatsappPdfButton));
+
+                actionCell.append(viewButton, emailButton, whatsappPdfButton, sendButton);
                 row.appendChild(actionCell);
                 tbody.appendChild(row);
             });
@@ -2439,6 +2871,25 @@
                 showToast('Unable to Email Result', error.message);
             } finally {
                 button.textContent = 'Email Parent';
+                button.disabled = false;
+            }
+        }
+
+        async function sendWhatsAppPdf(student, button) {
+            if (!student.publishedAt) return;
+            button.disabled = true;
+            button.textContent = 'Sending...';
+            try {
+                await requestSchoolApi('/api/results/whatsapp-parent', {
+                    method: 'POST',
+                    body: JSON.stringify({ studentId: student.id, session: student.session })
+                });
+                showToast('WhatsApp Result Queued', `The released PDF was submitted to Twilio for the guardian number on file for ${student.name}.`);
+            } catch (error) {
+                console.error('Could not send the released result via WhatsApp:', error);
+                showToast('Unable to Send WhatsApp Result', error.message);
+            } finally {
+                button.textContent = 'Send WhatsApp PDF';
                 button.disabled = false;
             }
         }
