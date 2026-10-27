@@ -13,12 +13,12 @@ const { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia } = require(
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const adminEmail = (process.env.ADMIN_EMAIL || process.env.TEACHER_EMAIL || '').trim().toLowerCase();
-const accountPath = path.join(__dirname, '.private', 'teacher-account.json');
+const accountPath = path.join(__dirname, 'private', 'teacher-account.json');
 const databasePath = process.env.DATABASE_PATH
     ? (path.isAbsolute(process.env.DATABASE_PATH)
         ? process.env.DATABASE_PATH
         : path.resolve(__dirname, process.env.DATABASE_PATH))
-    : path.join(__dirname, '.private', 'miracle-school.sqlite');
+    : path.join(__dirname, 'private', 'miracle-school.sqlite');
 const scrypt = promisify(crypto.scrypt);
 const sessionCookieAgeSeconds = 365 * 24 * 60 * 60;
 const studentSessionCookieAgeSeconds = sessionCookieAgeSeconds;

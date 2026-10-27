@@ -57,7 +57,7 @@ if (-not (Test-Path 'node_modules')) {
     }
 }
 
-New-Item -ItemType Directory -Force '.private' | Out-Null
+New-Item -ItemType Directory -Force 'private' | Out-Null
 Write-Output 'Starting the portal. SQLite database will be created at .private\miracle-school.sqlite.'
 Write-Output 'Open http://localhost:3000/admin after the server reports that it is running. Press Ctrl+C to stop it.'
 & npm.cmd start
