@@ -1,7 +1,7 @@
-const axios = require('axios');
-const fs = require('node:fs');
-const path = require('node:path');
-const PDFDocument = require('pdfkit');
+import axios from 'axios';
+import fs from 'node:fs';
+import path from 'node:path';
+import PDFDocument from 'pdfkit';
 
 const schoolLogoPath = path.join(__dirname, 'image', 'file_00000000db187243a08d3121bacdc848.png');
 
