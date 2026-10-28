@@ -6,7 +6,7 @@ createClient({ url: process.env.DATABASE_URL });
 const crypto = require('node:crypto');
 const fs = require('node:fs/promises');
 const path = require('node:path');
-await fs.mkdir (path.join (__dirname, 'private'), { recursive: true });
+ await fs.mkdir('/tmp/private', { recursive: true });
 const { promisify } = require('node:util');
 const express = require('express');
 const { rateLimit } = require('express-rate-limit');
