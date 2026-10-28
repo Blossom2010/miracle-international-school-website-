@@ -5,7 +5,7 @@ const client = createClient({ url: process.env.DATABASE_URL });
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
- await fs.mkdir('/tmp/private', { recursive: true });
+  (async () => { await fs.mkdir('/tmp/private', { recursive: true }); })();
 import { promisify } from 'node:util';
 import express from 'express';
 import { rateLimit } from 'express-rate-limit';
