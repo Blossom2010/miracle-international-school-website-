@@ -151,22 +151,4 @@ async function sendWhatsAppMedia({ to, mediaUrl, axiosClient = axios }) {
     return { messageSid: response.data.sid };
 }
 
-/**
- * Generates a student result PDF.
- * Modify the inner logic to match how you are creating your PDF files.
- */
-async function createResultPdf(studentData) {
-    try {
-        // TODO: Add your PDF generation code here 
-        // (e.g., using a library like PDFKit, html-pdf, or puppeteer)
-        
-        // Return the file path or success status once created
-        const pdfPath = "./pdf/result.pdf"; 
-        return pdfPath;
-    } catch (error) {
-        console.error("Error creating result PDF:", error);
-        throw error;
-    }
-}
 export { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia };
-
