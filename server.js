@@ -1,19 +1,21 @@
-require('dotenv').config();
-const { createClient } = require('@libsql/client');
+import'dotenv/config';
+import { createClient } from '@libsql/client';
 const client = createClient({ url: process.env.DATABASE_URL });
-createClient({ url: process.env.DATABASE_URL }); 
 
-const crypto = require('node:crypto');
-const fs = require('node:fs/promises');
-const path = require('node:path');
+import crypto from 'node:crypto';
+import fs from 'node:fs/promises';
+import path from 'node:path';
  await fs.mkdir('/tmp/private', { recursive: true });
-const { promisify } = require('node:util');
-const express = require('express');
-const { rateLimit } = require('express-rate-limit');
-const nodemailer = require('nodemailer');
-const Database = require('better-sqlite3');
-const { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia } = require('./whatsapp');
+import { promisify } from 'node:util';
+import express from 'express';
+import { rateLimit } from 'express-rate-limit';
+import nodemailer from 'nodemailer';
+import Database from 'better-sqlite3';
+import { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia } from './whatsapp.js';
+import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(_filename);
 const app = express();
 const port = Number(process.env.PORT || 3000);
 const adminEmail = (process.env.ADMIN_EMAIL || process.env.TEACHER_EMAIL || '').trim().toLowerCase();
