@@ -1,18 +1,17 @@
 import'dotenv/config';
 import { createClient } from '@libsql/client';
-const client = createClient({ url: process.env.DATABASE_URL });
-
 import crypto from 'node:crypto';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-  (async () => { await fs.mkdir('/tmp/private', { recursive: true }); })();
 import { promisify } from 'node:util';
+import fs from 'node:fs/promises';
 import express from 'express';
 import { rateLimit } from 'express-rate-limit';
+import path from 'node:path';
 import nodemailer from 'nodemailer';
 import Database from 'better-sqlite3';
 import { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia } from './whatsapp.js';
 import { fileURLToPath } from 'node:url';
+(async () => { await fs.mkdir('/tmp/private', { recursive: true }); })();
+const client = createClient({ url: process.env.DATABASE_URL });
 
 const __filename = fileURLToPath(import.meta.url);
 const _dirname = path.dirname(_filename);
@@ -2014,19 +2013,5 @@ app.use((error, req, res, next) => {
     if (res.headersSent) return next(error);
     return res.status(400).json({ error: 'Invalid request.' });
 });
-
-async function start() {
-    if (!process.env.RESET_CODE_SECRET || process.env.RESET_CODE_SECRET.length < 24) {
-        throw new Error('Set RESET_CODE_SECRET to a random value of at least 24 characters in your .env file.');
-    }
-    initializeDatabase();
-    await loadAdminAccount();
-    app.listen(port, () => {
-        console.log(`Miracle School portal running at http://localhost:${port}; database: ${databasePath}`);
-    });
-}
-
-start().catch((error) => {
-    console.error('Unable to start the portal:', error.message);
-    process.exitCode = 1;
-});
+ 
+module.exports = app;
