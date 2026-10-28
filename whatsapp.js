@@ -6,8 +6,8 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const _dirname = dirname(_filename);
-const schoolLogoPath = path.join(_dirname, 'image', 'file_00000000db187243a08d3121bacdc848.png');
+const __dirname = dirname(__filename);
+const schoolLogoPath = path.join(__dirname, 'image', 'file_00000000db187243a08d3121bacdc848.png');
 
 function calculateGrade(score) {
     if (score >= 70) return 'A';
