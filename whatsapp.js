@@ -152,3 +152,4 @@ async function sendWhatsAppMedia({ to, mediaUrl, axiosClient = axios }) {
 }
 
 module.exports = { createResultPdf, normalizeWhatsAppNumber, sendWhatsAppMedia };
+
